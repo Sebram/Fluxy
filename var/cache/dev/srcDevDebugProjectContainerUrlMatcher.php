@@ -28,6 +28,18 @@ class srcDevDebugProjectContainerUrlMatcher extends Symfony\Bundle\FrameworkBund
             $canonicalMethod = 'GET';
         }
 
+        // app_home
+        if ('/api/home' === $pathinfo) {
+            $ret = array (  '_controller' => 'App\\Controller\\ApiController::homeAction',  '_route' => 'app_home',);
+            if (!in_array($canonicalMethod, array('GET'))) {
+                $allow = array_merge($allow, array('GET'));
+                goto not_app_home;
+            }
+
+            return $ret;
+        }
+        not_app_home:
+
         if (0 === strpos($pathinfo, '/_')) {
             // _twig_error_test
             if (0 === strpos($pathinfo, '/_error') && preg_match('#^/_error/(?P<code>\\d+)(?:\\.(?P<_format>[^/]++))?$#sD', $pathinfo, $matches)) {

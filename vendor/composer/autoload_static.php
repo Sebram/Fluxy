@@ -33,6 +33,7 @@ class ComposerStaticInit5064e75dd339e762927060d468958c3f
             'Symfony\\Component\\VarDumper\\' => 28,
             'Symfony\\Component\\Validator\\' => 28,
             'Symfony\\Component\\Translation\\' => 30,
+            'Symfony\\Component\\Templating\\' => 29,
             'Symfony\\Component\\Stopwatch\\' => 28,
             'Symfony\\Component\\Serializer\\' => 29,
             'Symfony\\Component\\Security\\' => 27,
@@ -75,9 +76,17 @@ class ComposerStaticInit5064e75dd339e762927060d468958c3f
             'PhpParser\\' => 10,
             'PackageVersions\\' => 16,
         ),
+        'N' => 
+        array (
+            'Negotiation\\' => 12,
+        ),
         'M' => 
         array (
             'Monolog\\' => 8,
+        ),
+        'F' => 
+        array (
+            'FOS\\RestBundle\\' => 15,
         ),
         'E' => 
         array (
@@ -145,6 +154,10 @@ class ComposerStaticInit5064e75dd339e762927060d468958c3f
         'Symfony\\Component\\Translation\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/translation',
+        ),
+        'Symfony\\Component\\Templating\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/templating',
         ),
         'Symfony\\Component\\Stopwatch\\' => 
         array (
@@ -298,9 +311,17 @@ class ComposerStaticInit5064e75dd339e762927060d468958c3f
         array (
             0 => __DIR__ . '/..' . '/ocramius/package-versions/src/PackageVersions',
         ),
+        'Negotiation\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/willdurand/negotiation/src/Negotiation',
+        ),
         'Monolog\\' => 
         array (
             0 => __DIR__ . '/..' . '/monolog/monolog/src/Monolog',
+        ),
+        'FOS\\RestBundle\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/friendsofsymfony/rest-bundle',
         ),
         'Egulias\\EmailValidator\\' => 
         array (
@@ -377,6 +398,13 @@ class ComposerStaticInit5064e75dd339e762927060d468958c3f
             'ProxyManager\\' => 
             array (
                 0 => __DIR__ . '/..' . '/ocramius/proxy-manager/src',
+            ),
+        ),
+        'J' => 
+        array (
+            'JsonpCallbackValidator' => 
+            array (
+                0 => __DIR__ . '/..' . '/willdurand/jsonp-callback-validator/src',
             ),
         ),
         'D' => 
