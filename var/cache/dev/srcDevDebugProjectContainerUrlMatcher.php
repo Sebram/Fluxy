@@ -214,6 +214,18 @@ class srcDevDebugProjectContainerUrlMatcher extends Symfony\Bundle\FrameworkBund
 
         }
 
+        // homefluxy_keycheck_home
+        if ('/keycheck' === $pathinfo) {
+            $ret = array (  '_controller' => 'App\\Fluxy\\KeycheckBundle\\Controller\\FluxyKeycheckController::homeAction',  '_format' => 'json',  '_route' => 'homefluxy_keycheck_home',);
+            if (!in_array($canonicalMethod, array('GET'))) {
+                $allow = array_merge($allow, array('GET'));
+                goto not_homefluxy_keycheck_home;
+            }
+
+            return $ret;
+        }
+        not_homefluxy_keycheck_home:
+
         if ('/' === $pathinfo && !$allow) {
             throw new Symfony\Component\Routing\Exception\NoConfigurationException();
         }

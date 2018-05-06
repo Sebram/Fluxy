@@ -13,6 +13,13 @@ nelmio-api-doc:
 app_fluxy:
     type: rest
     resource: App\Fluxy\UserBundle\Controller\FluxyUserController
+
+app_fluxy_keycheck:
+    type: rest
+    resource: App\Fluxy\KeycheckBundle\Controller\FluxyKeycheckController
+
+
+
 ################################################################################
 
 # fos_user_security:

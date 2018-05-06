@@ -28,6 +28,7 @@
       <parameter key="NelmioApiDocBundle">Nelmio\ApiDocBundle\NelmioApiDocBundle</parameter>
       <parameter key="FOSOAuthServerBundle">FOS\OAuthServerBundle\FOSOAuthServerBundle</parameter>
       <parameter key="FluxyUserBundle">App\Fluxy\UserBundle\FluxyUserBundle</parameter>
+      <parameter key="FluxyKeycheckBundle">App\Fluxy\KeycheckBundle\FluxyKeycheckBundle</parameter>
     </parameter>
     <parameter key="kernel.bundles_metadata" type="collection">
       <parameter key="FrameworkBundle" type="collection">
@@ -124,6 +125,11 @@
         <parameter key="parent">null</parameter>
         <parameter key="path">/Users/Sebram/Weborium/fluxy/src/Fluxy/UserBundle</parameter>
         <parameter key="namespace">App\Fluxy\UserBundle</parameter>
+      </parameter>
+      <parameter key="FluxyKeycheckBundle" type="collection">
+        <parameter key="parent">null</parameter>
+        <parameter key="path">/Users/Sebram/Weborium/fluxy/src/Fluxy/KeycheckBundle</parameter>
+        <parameter key="namespace">App\Fluxy\KeycheckBundle</parameter>
       </parameter>
     </parameter>
     <parameter key="kernel.charset">UTF-8</parameter>
@@ -3412,6 +3418,14 @@
         <argument>!FluxyUser</argument>
       </call>
       <call method="addPath">
+        <argument>/Users/Sebram/Weborium/fluxy/src/Fluxy/KeycheckBundle/Resources/views</argument>
+        <argument>FluxyKeycheck</argument>
+      </call>
+      <call method="addPath">
+        <argument>/Users/Sebram/Weborium/fluxy/src/Fluxy/KeycheckBundle/Resources/views</argument>
+        <argument>!FluxyKeycheck</argument>
+      </call>
+      <call method="addPath">
         <argument>/Users/Sebram/Weborium/fluxy/templates</argument>
       </call>
       <call method="addPath">
@@ -3613,6 +3627,14 @@
       <call method="addPath">
         <argument>/Users/Sebram/Weborium/fluxy/src/Fluxy/UserBundle/Resources/views</argument>
         <argument>!FluxyUser</argument>
+      </call>
+      <call method="addPath">
+        <argument>/Users/Sebram/Weborium/fluxy/src/Fluxy/KeycheckBundle/Resources/views</argument>
+        <argument>FluxyKeycheck</argument>
+      </call>
+      <call method="addPath">
+        <argument>/Users/Sebram/Weborium/fluxy/src/Fluxy/KeycheckBundle/Resources/views</argument>
+        <argument>!FluxyKeycheck</argument>
       </call>
       <call method="addPath">
         <argument>/Users/Sebram/Weborium/fluxy/templates</argument>

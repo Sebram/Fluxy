@@ -46,8 +46,8 @@ class FluxyKeycheckController extends FOSRestController
             <title>KeyCheck</title>
         </head>
         <body>
-        <h2>Welcome ! Nous allons faire un "Matching" entre les clés du fichier csv et de la base de donnée.</h2>
-        
+        <h2>Welcome ! Nous allons faire un "Matching" entre les clés du fichier csv et de la base de données.</h2>
+
         </body>
         </html>');
     }
