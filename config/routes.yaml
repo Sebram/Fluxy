@@ -10,10 +10,9 @@ nelmio-api-doc:
     resource: "@NelmioApiDocBundle/Resources/config/routing/swaggerui.xml"
     prefix:   /documentation
 
-app_user_api_controller:
+app_fluxy:
     type: rest
-    resource: App\Controller\UserController
-
+    resource: App\Fluxy\UserBundle\Controller\FluxyUserController
 ################################################################################
 
 # fos_user_security:

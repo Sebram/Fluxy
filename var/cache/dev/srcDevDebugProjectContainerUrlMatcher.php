@@ -28,120 +28,6 @@ class srcDevDebugProjectContainerUrlMatcher extends Symfony\Bundle\FrameworkBund
             $canonicalMethod = 'GET';
         }
 
-        if (0 === strpos($pathinfo, '/test')) {
-            // app_test_detail
-            if (0 === strpos($pathinfo, '/test/detail') && preg_match('#^/test/detail/(?P<id>\\d+)$#sD', $pathinfo, $matches)) {
-                $ret = $this->mergeDefaults(array_replace($matches, array('_route' => 'app_test_detail')), array (  '_controller' => 'App\\Controller\\TestController::detail',));
-                if (!in_array($canonicalMethod, array('GET'))) {
-                    $allow = array_merge($allow, array('GET'));
-                    goto not_app_test_detail;
-                }
-
-                return $ret;
-            }
-            not_app_test_detail:
-
-            // app_test_list
-            if ('/test/list' === $pathinfo) {
-                $ret = array (  '_controller' => 'App\\Controller\\TestController::list',  '_route' => 'app_test_list',);
-                if (!in_array($canonicalMethod, array('GET'))) {
-                    $allow = array_merge($allow, array('GET'));
-                    goto not_app_test_list;
-                }
-
-                return $ret;
-            }
-            not_app_test_list:
-
-            // app_test_create
-            if ('/test/create' === $pathinfo) {
-                $ret = array (  '_controller' => 'App\\Controller\\TestController::create',  '_route' => 'app_test_create',);
-                if (!in_array($requestMethod, array('POST'))) {
-                    $allow = array_merge($allow, array('POST'));
-                    goto not_app_test_create;
-                }
-
-                return $ret;
-            }
-            not_app_test_create:
-
-        }
-
-        elseif (0 === strpos($pathinfo, '/users')) {
-            // new_users
-            if (0 === strpos($pathinfo, '/users/new') && preg_match('#^/users/new/(?P<mail>[^/]++)/(?P<username>[^/]++)/(?P<pass>[^/]++)$#sD', $pathinfo, $matches)) {
-                $ret = $this->mergeDefaults(array_replace($matches, array('_route' => 'new_users')), array (  '_controller' => 'App\\Controller\\UserController::newUsersAction',));
-                if (!in_array($canonicalMethod, array('GET'))) {
-                    $allow = array_merge($allow, array('GET'));
-                    goto not_new_users;
-                }
-
-                return $ret;
-            }
-            not_new_users:
-
-            // users_auth
-            if (0 === strpos($pathinfo, '/users/auth') && preg_match('#^/users/auth/(?P<email>[^/]++)/(?P<pass>[^/]++)$#sD', $pathinfo, $matches)) {
-                $ret = $this->mergeDefaults(array_replace($matches, array('_route' => 'users_auth')), array (  '_controller' => 'App\\Controller\\UserController::usersAuthAction',));
-                if (!in_array($canonicalMethod, array('GET'))) {
-                    $allow = array_merge($allow, array('GET'));
-                    goto not_users_auth;
-                }
-
-                return $ret;
-            }
-            not_users_auth:
-
-            // get_user
-            if (preg_match('#^/users/(?P<id>\\d+)$#sD', $pathinfo, $matches)) {
-                $ret = $this->mergeDefaults(array_replace($matches, array('_route' => 'get_user')), array (  '_controller' => 'App\\Controller\\UserController::getUserAction',));
-                if (!in_array($canonicalMethod, array('GET'))) {
-                    $allow = array_merge($allow, array('GET'));
-                    goto not_get_user;
-                }
-
-                return $ret;
-            }
-            not_get_user:
-
-            // new_usersnew_users
-            if (0 === strpos($pathinfo, '/users/new') && preg_match('#^/users/new/(?P<mail>[^/]++)/(?P<username>[^/]++)/(?P<pass>[^/]++)$#sD', $pathinfo, $matches)) {
-                $ret = $this->mergeDefaults(array_replace($matches, array('_route' => 'new_usersnew_users')), array (  '_controller' => 'App\\Controller\\UserController:newUsersAction',  '_format' => 'json',));
-                if (!in_array($canonicalMethod, array('GET'))) {
-                    $allow = array_merge($allow, array('GET'));
-                    goto not_new_usersnew_users;
-                }
-
-                return $ret;
-            }
-            not_new_usersnew_users:
-
-            // users_authusers_auth
-            if (0 === strpos($pathinfo, '/users/auth') && preg_match('#^/users/auth/(?P<email>[^/]++)/(?P<pass>[^/]++)$#sD', $pathinfo, $matches)) {
-                $ret = $this->mergeDefaults(array_replace($matches, array('_route' => 'users_authusers_auth')), array (  '_controller' => 'App\\Controller\\UserController:usersAuthAction',  '_format' => 'json',));
-                if (!in_array($canonicalMethod, array('GET'))) {
-                    $allow = array_merge($allow, array('GET'));
-                    goto not_users_authusers_auth;
-                }
-
-                return $ret;
-            }
-            not_users_authusers_auth:
-
-            // get_userget_user
-            if (preg_match('#^/users/(?P<id>\\d+)$#sD', $pathinfo, $matches)) {
-                $ret = $this->mergeDefaults(array_replace($matches, array('_route' => 'get_userget_user')), array (  '_controller' => 'App\\Controller\\UserController:getUserAction',  '_format' => 'json',));
-                if (!in_array($canonicalMethod, array('GET'))) {
-                    $allow = array_merge($allow, array('GET'));
-                    goto not_get_userget_user;
-                }
-
-                return $ret;
-            }
-            not_get_userget_user:
-
-        }
-
         // app.swagger
         if ('/api/doc.json' === $pathinfo) {
             $ret = array (  '_controller' => 'nelmio_api_doc.controller.swagger',  '_route' => 'app.swagger',);
@@ -276,6 +162,57 @@ class srcDevDebugProjectContainerUrlMatcher extends Symfony\Bundle\FrameworkBund
             return $ret;
         }
         not_nelmio_api_docswagger_ui:
+
+        // homefluxy_home
+        if ('/home' === $pathinfo) {
+            $ret = array (  '_controller' => 'App\\Fluxy\\UserBundle\\Controller\\FluxyUserController:homeAction',  '_format' => 'json',  '_route' => 'homefluxy_home',);
+            if (!in_array($canonicalMethod, array('GET'))) {
+                $allow = array_merge($allow, array('GET'));
+                goto not_homefluxy_home;
+            }
+
+            return $ret;
+        }
+        not_homefluxy_home:
+
+        if (0 === strpos($pathinfo, '/users')) {
+            // new_usersfluxy_new_users
+            if (0 === strpos($pathinfo, '/users/new') && preg_match('#^/users/new/(?P<mail>[^/]++)/(?P<username>[^/]++)/(?P<pass>[^/]++)$#sD', $pathinfo, $matches)) {
+                $ret = $this->mergeDefaults(array_replace($matches, array('_route' => 'new_usersfluxy_new_users')), array (  '_controller' => 'App\\Fluxy\\UserBundle\\Controller\\FluxyUserController:newUsersAction',  '_format' => 'json',));
+                if (!in_array($canonicalMethod, array('GET'))) {
+                    $allow = array_merge($allow, array('GET'));
+                    goto not_new_usersfluxy_new_users;
+                }
+
+                return $ret;
+            }
+            not_new_usersfluxy_new_users:
+
+            // users_authfluxy_users_auth
+            if (0 === strpos($pathinfo, '/users/auth') && preg_match('#^/users/auth/(?P<email>[^/]++)/(?P<pass>[^/]++)$#sD', $pathinfo, $matches)) {
+                $ret = $this->mergeDefaults(array_replace($matches, array('_route' => 'users_authfluxy_users_auth')), array (  '_controller' => 'App\\Fluxy\\UserBundle\\Controller\\FluxyUserController:usersAuthAction',  '_format' => 'json',));
+                if (!in_array($canonicalMethod, array('GET'))) {
+                    $allow = array_merge($allow, array('GET'));
+                    goto not_users_authfluxy_users_auth;
+                }
+
+                return $ret;
+            }
+            not_users_authfluxy_users_auth:
+
+            // get_userfluxy_get_user
+            if (preg_match('#^/users/(?P<id>\\d+)$#sD', $pathinfo, $matches)) {
+                $ret = $this->mergeDefaults(array_replace($matches, array('_route' => 'get_userfluxy_get_user')), array (  '_controller' => 'App\\Fluxy\\UserBundle\\Controller\\FluxyUserController:getUserAction',  '_format' => 'json',));
+                if (!in_array($canonicalMethod, array('GET'))) {
+                    $allow = array_merge($allow, array('GET'));
+                    goto not_get_userfluxy_get_user;
+                }
+
+                return $ret;
+            }
+            not_get_userfluxy_get_user:
+
+        }
 
         if ('/' === $pathinfo && !$allow) {
             throw new Symfony\Component\Routing\Exception\NoConfigurationException();

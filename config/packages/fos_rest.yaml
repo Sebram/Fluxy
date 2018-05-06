@@ -5,9 +5,12 @@ fos_rest:
 
     format_listener:
         rules:
-            - { path: '^/', priorities: ['json'], fallback_format: 'json' }                # will eventually be JSON formated
+            - { path: ^/, prefer_extension: true, fallback_format: json, priorities: [ json, html ] }
+
     view:
+        formats: { json: true, xml: false, rss: false }
         view_response_listener: true
+
 # # Read the documentation: https://symfony.com/doc/master/bundles/FOSRestBundle/index.html
 # fos_rest:
 # #    param_fetcher_listener:  true

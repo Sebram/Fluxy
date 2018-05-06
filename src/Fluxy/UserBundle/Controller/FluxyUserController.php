@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Fluxy\UserBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,12 +23,29 @@ use App\Entity\User;
 use App\Entity\Client;
 
 
-class UserController extends FOSRestController
+class FluxyUserController extends FOSRestController
 {
+
+    /**
+     * @Get(
+     *     path = "/home",
+     *     name = "fluxy_home"
+     * )
+     */
+    public function homeAction()
+    {
+        $appname="Fluxy";
+
+        return $this->render('fluxy/home.html.twig', array(
+            'appname' => $appname,
+        ));
+    }
+
+
     /**
      * @Get(
      *     path = "/users/new/{mail}/{username}/{pass}",
-     *     name = "new_users",
+     *     name = "fluxy_new_users",
      *     requirements = {"mail", "username", "pass"}
      * )
      * @View(serializerGroups={"new"})
@@ -50,7 +67,7 @@ class UserController extends FOSRestController
     /**
      * @Get(
      *     path = "/users/auth/{email}/{pass}",
-     *     name = "users_auth",
+     *     name = "fluxy_users_auth",
      *     requirements = {"email", "pass"}
      * )
      * @View(serializerGroups={"auth"})
@@ -110,7 +127,7 @@ class UserController extends FOSRestController
 
                 # Check 4: Check on request to check clientId & secret then get token from Oauth
                 
-                $url = "http://s.wbrm/core_api/public/oauth/v2/token?";
+                $url = "http://s.wbrm/fluxy/public/oauth/v2/token?";
                 
                 $url .= "client_id=".$cid."&client_secret=".$secret."&";
                 
@@ -292,7 +309,7 @@ class UserController extends FOSRestController
     /**
      * @Get(
      *     path = "/users/{id}",
-     *     name = "get_user",
+     *     name = "fluxy_get_user",
      *     requirements = {"id"="\d+"}
      * )
      */

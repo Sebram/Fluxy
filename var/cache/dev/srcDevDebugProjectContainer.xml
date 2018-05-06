@@ -27,6 +27,7 @@
       <parameter key="FOSUserBundle">FOS\UserBundle\FOSUserBundle</parameter>
       <parameter key="NelmioApiDocBundle">Nelmio\ApiDocBundle\NelmioApiDocBundle</parameter>
       <parameter key="FOSOAuthServerBundle">FOS\OAuthServerBundle\FOSOAuthServerBundle</parameter>
+      <parameter key="FluxyUserBundle">App\Fluxy\UserBundle\FluxyUserBundle</parameter>
     </parameter>
     <parameter key="kernel.bundles_metadata" type="collection">
       <parameter key="FrameworkBundle" type="collection">
@@ -118,6 +119,11 @@
         <parameter key="parent">null</parameter>
         <parameter key="path">/Users/Sebram/Weborium/fluxy/vendor/friendsofsymfony/oauth-server-bundle</parameter>
         <parameter key="namespace">FOS\OAuthServerBundle</parameter>
+      </parameter>
+      <parameter key="FluxyUserBundle" type="collection">
+        <parameter key="parent">null</parameter>
+        <parameter key="path">/Users/Sebram/Weborium/fluxy/src/Fluxy/UserBundle</parameter>
+        <parameter key="namespace">App\Fluxy\UserBundle</parameter>
       </parameter>
     </parameter>
     <parameter key="kernel.charset">UTF-8</parameter>
@@ -673,17 +679,9 @@
     <service id="EasyCorp\EasyLog\EasyLogHandler" class="EasyCorp\EasyLog\EasyLogHandler" public="false">
       <argument>/Users/Sebram/Weborium/fluxy/var/log/dev.log</argument>
     </service>
-    <service id="App\Controller\TestController" class="App\Controller\TestController" public="true" autowire="true" autoconfigure="true">
+    <service id="App\Fluxy\UserBundle\Controller\FluxyUserController" class="App\Fluxy\UserBundle\Controller\FluxyUserController" public="true" autowire="true" autoconfigure="true">
       <tag name="controller.service_arguments"/>
     </service>
-    <service id="App\Controller\UserController" class="App\Controller\UserController" public="true" autowire="true" autoconfigure="true">
-      <tag name="controller.service_arguments"/>
-    </service>
-    <service id="App\Repository\TestRepository" class="App\Repository\TestRepository" public="false" autowire="true" autoconfigure="true">
-      <tag name="doctrine.repository_service"/>
-      <argument type="service" id="doctrine"/>
-    </service>
-    <service id="App\Repository\UserRepository" class="App\Repository\UserRepository" public="false" autowire="true" autoconfigure="true"/>
     <service id="controller_name_converter" class="Symfony\Bundle\FrameworkBundle\Controller\ControllerNameParser" public="false">
       <tag name="monolog.logger" channel="request"/>
       <argument type="service" id="kernel"/>
@@ -700,7 +698,7 @@
     </service>
     <service id="argument_resolver.service" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\ServiceValueResolver" public="false">
       <tag name="controller.argument_value_resolver" priority="-50"/>
-      <argument type="service" id="service_locator.jf8vwnl"/>
+      <argument type="service" id="service_locator.6rxlt5v"/>
     </service>
     <service id="argument_resolver.default" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\DefaultValueResolver" public="false">
       <tag name="controller.argument_value_resolver" priority="-100"/>
@@ -3406,6 +3404,14 @@
         <argument>!FOSOAuthServer</argument>
       </call>
       <call method="addPath">
+        <argument>/Users/Sebram/Weborium/fluxy/src/Fluxy/UserBundle/Resources/views</argument>
+        <argument>FluxyUser</argument>
+      </call>
+      <call method="addPath">
+        <argument>/Users/Sebram/Weborium/fluxy/src/Fluxy/UserBundle/Resources/views</argument>
+        <argument>!FluxyUser</argument>
+      </call>
+      <call method="addPath">
         <argument>/Users/Sebram/Weborium/fluxy/templates</argument>
       </call>
       <call method="addPath">
@@ -3599,6 +3605,14 @@
       <call method="addPath">
         <argument>/Users/Sebram/Weborium/fluxy/vendor/friendsofsymfony/oauth-server-bundle/Resources/views</argument>
         <argument>!FOSOAuthServer</argument>
+      </call>
+      <call method="addPath">
+        <argument>/Users/Sebram/Weborium/fluxy/src/Fluxy/UserBundle/Resources/views</argument>
+        <argument>FluxyUser</argument>
+      </call>
+      <call method="addPath">
+        <argument>/Users/Sebram/Weborium/fluxy/src/Fluxy/UserBundle/Resources/views</argument>
+        <argument>!FluxyUser</argument>
       </call>
       <call method="addPath">
         <argument>/Users/Sebram/Weborium/fluxy/templates</argument>
@@ -4600,7 +4614,7 @@
       <factory class="Doctrine\ORM\EntityManager" method="create"/>
     </service>
     <service id="doctrine.orm.container_repository_factory" class="Doctrine\Bundle\DoctrineBundle\Repository\ContainerRepositoryFactory" public="false">
-      <argument type="service" id="service_locator.xuag_gn"/>
+      <argument type="service" id="service_locator.sr6ctxe"/>
     </service>
     <service id="doctrine.orm.manager_configurator.abstract" class="Doctrine\Bundle\DoctrineBundle\ManagerConfigurator" abstract="true">
       <argument type="collection"/>
@@ -5205,7 +5219,6 @@
       <argument type="service" id="request_stack"/>
       <argument type="collection">
         <argument key="json">false</argument>
-        <argument key="xml">false</argument>
         <argument key="html">true</argument>
       </argument>
       <argument>400</argument>
@@ -5243,7 +5256,6 @@
       <argument>false</argument>
       <argument type="collection">
         <argument key="json">false</argument>
-        <argument key="xml">false</argument>
         <argument key="html">true</argument>
       </argument>
       <argument>json</argument>
@@ -5255,7 +5267,6 @@
       <argument>false</argument>
       <argument type="collection">
         <argument key="json">false</argument>
-        <argument key="xml">false</argument>
         <argument key="html">true</argument>
       </argument>
       <argument>json</argument>
@@ -5271,7 +5282,6 @@
       <argument>false</argument>
       <argument type="collection">
         <argument key="json">false</argument>
-        <argument key="xml">false</argument>
         <argument key="html">true</argument>
       </argument>
       <argument>true</argument>
@@ -5354,14 +5364,15 @@
       <call method="add">
         <argument type="service" id="fos_rest.request_matcher.69e9d3fd562e0ecffc5bce0c68d3b7a673d187934b742bc76452558275bbd7611198d478"/>
         <argument type="collection">
+          <argument key="prefer_extension">2.0</argument>
+          <argument key="fallback_format">json</argument>
           <argument key="priorities" type="collection">
             <argument>json</argument>
+            <argument>html</argument>
           </argument>
-          <argument key="fallback_format">json</argument>
           <argument key="methods">null</argument>
           <argument key="attributes" type="collection"/>
           <argument key="stop">false</argument>
-          <argument key="prefer_extension">2.0</argument>
         </argument>
       </call>
     </service>
@@ -6189,7 +6200,7 @@
       <argument type="collection">
         <argument key="info" type="collection">
           <argument key="title">Fluxy</argument>
-          <argument key="description">This is a new Fluxy app!</argument>
+          <argument key="description">This is a new Fluxy app !</argument>
           <argument key="version">1.0.0</argument>
         </argument>
       </argument>
@@ -6229,6 +6240,7 @@
               <argument>^/api</argument>
               <argument>^/documentation</argument>
               <argument>^/login</argument>
+              <argument>^/fluxy</argument>
               <argument>^/login_check</argument>
               <argument>^/logout</argument>
               <argument>^/profile</argument>
@@ -6358,12 +6370,8 @@
       <argument type="service" id="session" on-invalid="null"/>
       <argument>twig</argument>
     </service>
-    <service id="instanceof.Symfony\Bundle\FrameworkBundle\Controller\Controller.0.App\Controller\TestController" class="App\Controller\TestController" public="false" autowire="true" abstract="true"/>
-    <service id="abstract.instanceof.App\Controller\TestController" class="App\Controller\TestController" public="false" autowire="true" autoconfigure="true" abstract="true"/>
-    <service id="instanceof.Symfony\Bundle\FrameworkBundle\Controller\Controller.0.App\Controller\UserController" class="App\Controller\UserController" public="false" autowire="true" abstract="true"/>
-    <service id="abstract.instanceof.App\Controller\UserController" class="App\Controller\UserController" public="false" autowire="true" autoconfigure="true" abstract="true"/>
-    <service id="instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\TestRepository" class="App\Repository\TestRepository" public="false" autowire="true" abstract="true"/>
-    <service id="abstract.instanceof.App\Repository\TestRepository" class="App\Repository\TestRepository" public="false" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id="instanceof.Symfony\Bundle\FrameworkBundle\Controller\Controller.0.App\Fluxy\UserBundle\Controller\FluxyUserController" class="App\Fluxy\UserBundle\Controller\FluxyUserController" public="false" autowire="true" abstract="true"/>
+    <service id="abstract.instanceof.App\Fluxy\UserBundle\Controller\FluxyUserController" class="App\Fluxy\UserBundle\Controller\FluxyUserController" public="false" autowire="true" autoconfigure="true" abstract="true"/>
     <service id="maker.auto_command.make_auth" class="Symfony\Bundle\MakerBundle\Command\MakerCommand">
       <tag name="console.command" command="make:auth"/>
       <argument type="service" id="maker.maker.make_authenticator"/>
@@ -6484,23 +6492,17 @@
         <argument>make:migration</argument>
       </call>
     </service>
-    <service id="service_locator.hdbb1ef" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
-      <tag name="container.service_locator"/>
-      <argument type="collection"/>
-    </service>
     <service id="service_locator.r15f9hk" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="viewhandler" type="service" id="fos_rest.view_handler.default" on-invalid="ignore"/>
       </argument>
     </service>
-    <service id="service_locator.jf8vwnl" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
+    <service id="service_locator.6rxlt5v" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
       <tag name="container.service_locator"/>
       <argument type="collection">
-        <argument key="App\Controller\TestController:setViewHandler" type="service" id="service_locator.r15f9hk"/>
-        <argument key="App\Controller\UserController:setViewHandler" type="service" id="service_locator.r15f9hk"/>
-        <argument key="App\Controller\TestController::setViewHandler" type="service" id="service_locator.r15f9hk"/>
-        <argument key="App\Controller\UserController::setViewHandler" type="service" id="service_locator.r15f9hk"/>
+        <argument key="App\Fluxy\UserBundle\Controller\FluxyUserController:setViewHandler" type="service" id="service_locator.r15f9hk"/>
+        <argument key="App\Fluxy\UserBundle\Controller\FluxyUserController::setViewHandler" type="service" id="service_locator.r15f9hk"/>
       </argument>
     </service>
     <service id="console.command_loader" class="Symfony\Component\Console\CommandLoader\ContainerCommandLoader" public="true">
@@ -6689,11 +6691,9 @@
         <argument key="Symfony\Component\Form\Extension\Core\Type\FormType" type="service" id="form.type.form"/>
       </argument>
     </service>
-    <service id="service_locator.xuag_gn" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
+    <service id="service_locator.sr6ctxe" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
       <tag name="container.service_locator"/>
-      <argument type="collection">
-        <argument key="App\Repository\TestRepository" type="service" id="App\Repository\TestRepository"/>
-      </argument>
+      <argument type="collection"/>
     </service>
     <service id="monolog.logger.request" class="Symfony\Bridge\Monolog\Logger">
       <argument>request</argument>
