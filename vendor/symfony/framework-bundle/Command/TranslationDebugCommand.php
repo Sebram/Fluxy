@@ -11,7 +11,6 @@
 
 namespace Symfony\Bundle\FrameworkBundle\Command;
 
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputArgument;
@@ -33,9 +32,9 @@ use Symfony\Component\Translation\TranslatorInterface;
  *
  * @author Florian Voutzinos <florian@voutzinos.com>
  *
- * @final
+ * @final since version 3.4
  */
-class TranslationDebugCommand extends Command
+class TranslationDebugCommand extends ContainerAwareCommand
 {
     const MESSAGE_MISSING = 0;
     const MESSAGE_UNUSED = 1;
@@ -49,8 +48,16 @@ class TranslationDebugCommand extends Command
     private $defaultTransPath;
     private $defaultViewsPath;
 
-    public function __construct(TranslatorInterface $translator, TranslationReaderInterface $reader, ExtractorInterface $extractor, string $defaultTransPath = null, string $defaultViewsPath = null)
+    public function __construct($translator = null, TranslationReaderInterface $reader = null, ExtractorInterface $extractor = null, $defaultTransPath = null, $defaultViewsPath = null)
     {
+        if (!$translator instanceof TranslatorInterface) {
+            @trigger_error(sprintf('%s() expects an instance of "%s" as first argument since Symfony 3.4. Not passing it is deprecated and will throw a TypeError in 4.0.', __METHOD__, TranslatorInterface::class), E_USER_DEPRECATED);
+
+            parent::__construct($translator);
+
+            return;
+        }
+
         parent::__construct();
 
         $this->translator = $translator;
@@ -111,9 +118,33 @@ EOF
 
     /**
      * {@inheritdoc}
+     *
+     * BC to be removed in 4.0
+     */
+    public function isEnabled()
+    {
+        if (null !== $this->translator) {
+            return parent::isEnabled();
+        }
+        if (!class_exists('Symfony\Component\Translation\Translator')) {
+            return false;
+        }
+
+        return parent::isEnabled();
+    }
+
+    /**
+     * {@inheritdoc}
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        // BC to be removed in 4.0
+        if (null === $this->translator) {
+            $this->translator = $this->getContainer()->get('translator');
+            $this->reader = $this->getContainer()->get('translation.reader');
+            $this->extractor = $this->getContainer()->get('translation.extractor');
+        }
+
         $io = new SymfonyStyle($input, $output);
 
         $locale = $input->getArgument('locale');
@@ -243,7 +274,7 @@ EOF
         $io->table($headers, $rows);
     }
 
-    private function formatState($state): string
+    private function formatState($state)
     {
         if (self::MESSAGE_MISSING === $state) {
             return '<error> missing </error>';
@@ -260,7 +291,7 @@ EOF
         return $state;
     }
 
-    private function formatStates(array $states): string
+    private function formatStates(array $states)
     {
         $result = array();
         foreach ($states as $state) {
@@ -270,12 +301,12 @@ EOF
         return implode(' ', $result);
     }
 
-    private function formatId(string $id): string
+    private function formatId($id)
     {
         return sprintf('<fg=cyan;options=bold>%s</>', $id);
     }
 
-    private function sanitizeString(string $string, int $length = 40): string
+    private function sanitizeString($string, $length = 40)
     {
         $string = trim(preg_replace('/\s+/', ' ', $string));
 
@@ -290,7 +321,13 @@ EOF
         return $string;
     }
 
-    private function extractMessages(string $locale, array $transPaths): MessageCatalogue
+    /**
+     * @param string $locale
+     * @param array  $transPaths
+     *
+     * @return MessageCatalogue
+     */
+    private function extractMessages($locale, $transPaths)
     {
         $extractedCatalogue = new MessageCatalogue($locale);
         foreach ($transPaths as $path) {
@@ -302,7 +339,13 @@ EOF
         return $extractedCatalogue;
     }
 
-    private function loadCurrentMessages(string $locale, array $transPaths): MessageCatalogue
+    /**
+     * @param string $locale
+     * @param array  $transPaths
+     *
+     * @return MessageCatalogue
+     */
+    private function loadCurrentMessages($locale, $transPaths)
     {
         $currentCatalogue = new MessageCatalogue($locale);
         foreach ($transPaths as $path) {
@@ -315,9 +358,12 @@ EOF
     }
 
     /**
+     * @param string $locale
+     * @param array  $transPaths
+     *
      * @return MessageCatalogue[]
      */
-    private function loadFallbackCatalogues(string $locale, array $transPaths): array
+    private function loadFallbackCatalogues($locale, $transPaths)
     {
         $fallbackCatalogues = array();
         if ($this->translator instanceof Translator || $this->translator instanceof DataCollectorTranslator || $this->translator instanceof LoggingTranslator) {

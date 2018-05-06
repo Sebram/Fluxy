@@ -13,7 +13,6 @@ namespace Symfony\Bundle\FrameworkBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Console\Helper\DescriptorHelper;
 use Symfony\Component\Config\ConfigCache;
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
@@ -29,9 +28,9 @@ use Symfony\Component\Config\FileLocator;
  *
  * @author Ryan Weaver <ryan@thatsquality.com>
  *
- * @internal
+ * @internal since version 3.4
  */
-class ContainerDebugCommand extends Command
+class ContainerDebugCommand extends ContainerAwareCommand
 {
     protected static $defaultName = 'debug:container';
 

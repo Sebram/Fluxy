@@ -36,7 +36,7 @@ class PhpArrayAdapter implements AdapterInterface, PruneableInterface, Resettabl
      * @param string           $file         The PHP file were values are cached
      * @param AdapterInterface $fallbackPool A pool to fallback on when an item is not hit
      */
-    public function __construct(string $file, AdapterInterface $fallbackPool)
+    public function __construct($file, AdapterInterface $fallbackPool)
     {
         $this->file = $file;
         $this->pool = $fallbackPool;
@@ -56,17 +56,19 @@ class PhpArrayAdapter implements AdapterInterface, PruneableInterface, Resettabl
     }
 
     /**
-     * This adapter takes advantage of how PHP stores arrays in its latest versions.
+     * This adapter should only be used on PHP 7.0+ to take advantage of how PHP
+     * stores arrays in its latest versions. This factory method decorates the given
+     * fallback pool with this adapter only if the current PHP version is supported.
      *
      * @param string                 $file         The PHP file were values are cached
-     * @param CacheItemPoolInterface $fallbackPool Fallback when opcache is disabled
+     * @param CacheItemPoolInterface $fallbackPool Fallback for old PHP versions or opcache disabled
      *
      * @return CacheItemPoolInterface
      */
     public static function create($file, CacheItemPoolInterface $fallbackPool)
     {
-        // Shared memory is available in PHP 7.0+ with OPCache enabled
-        if (ini_get('opcache.enable')) {
+        // Shared memory is available in PHP 7.0+ with OPCache enabled and in HHVM
+        if ((\PHP_VERSION_ID >= 70000 && ini_get('opcache.enable')) || defined('HHVM_VERSION')) {
             if (!$fallbackPool instanceof AdapterInterface) {
                 $fallbackPool = new ProxyAdapter($fallbackPool);
             }
@@ -224,7 +226,10 @@ class PhpArrayAdapter implements AdapterInterface, PruneableInterface, Resettabl
         return $this->pool->commit();
     }
 
-    private function generateItems(array $keys): \Generator
+    /**
+     * @return \Generator
+     */
+    private function generateItems(array $keys)
     {
         $f = $this->createCacheItem;
         $fallbackKeys = array();

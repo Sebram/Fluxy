@@ -310,6 +310,11 @@ class TextDescriptor extends Descriptor
         $tableRows[] = array('Autowired', $definition->isAutowired() ? 'yes' : 'no');
         $tableRows[] = array('Autoconfigured', $definition->isAutoconfigured() ? 'yes' : 'no');
 
+        // forward compatibility with DependencyInjection component in version 4.0
+        if (method_exists($definition, 'getAutowiringTypes') && $autowiringTypes = $definition->getAutowiringTypes(false)) {
+            $tableRows[] = array('Autowiring Types', implode(', ', $autowiringTypes));
+        }
+
         if ($definition->getFile()) {
             $tableRows[] = array('Required File', $definition->getFile() ? $definition->getFile() : '-');
         }
@@ -428,7 +433,12 @@ class TextDescriptor extends Descriptor
         $io->table($tableHeaders, $tableRows);
     }
 
-    private function formatRouterConfig(array $config): string
+    /**
+     * @param array $config
+     *
+     * @return string
+     */
+    private function formatRouterConfig(array $config)
     {
         if (empty($config)) {
             return 'NONE';
@@ -444,7 +454,12 @@ class TextDescriptor extends Descriptor
         return trim($configAsString);
     }
 
-    private function formatCallable($callable): string
+    /**
+     * @param callable $callable
+     *
+     * @return string
+     */
+    private function formatCallable($callable)
     {
         if (is_array($callable)) {
             if (is_object($callable[0])) {
@@ -469,7 +484,11 @@ class TextDescriptor extends Descriptor
         throw new \InvalidArgumentException('Callable is not describable.');
     }
 
-    private function writeText(string $content, array $options = array())
+    /**
+     * @param string $content
+     * @param array  $options
+     */
+    private function writeText($content, array $options = array())
     {
         $this->write(
             isset($options['raw_text']) && $options['raw_text'] ? strip_tags($content) : $content,

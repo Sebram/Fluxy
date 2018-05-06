@@ -39,9 +39,9 @@ class Configuration implements ConfigurationInterface
     /**
      * @param bool $debug Whether debugging is enabled or not
      */
-    public function __construct(bool $debug)
+    public function __construct($debug)
     {
-        $this->debug = $debug;
+        $this->debug = (bool) $debug;
     }
 
     /**
@@ -68,6 +68,39 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('http_method_override')
                     ->info("Set true to enable support for the '_method' request parameter to determine the intended HTTP method on POST requests. Note: When using the HttpCache, you need to call the method in your front controller instead")
                     ->defaultTrue()
+                ->end()
+                ->arrayNode('trusted_proxies')
+                    ->setDeprecated('The "%path%.%node%" configuration key has been deprecated in Symfony 3.3. Use the Request::setTrustedProxies() method in your front controller instead.')
+                    ->beforeNormalization()
+                        ->ifTrue(function ($v) {
+                            return !is_array($v) && null !== $v;
+                        })
+                        ->then(function ($v) { return is_bool($v) ? array() : preg_split('/\s*,\s*/', $v); })
+                    ->end()
+                    ->prototype('scalar')
+                        ->validate()
+                            ->ifTrue(function ($v) {
+                                if (empty($v)) {
+                                    return false;
+                                }
+
+                                if (false !== strpos($v, '/')) {
+                                    if ('0.0.0.0/0' === $v) {
+                                        return false;
+                                    }
+
+                                    list($v, $mask) = explode('/', $v, 2);
+
+                                    if (strcmp($mask, (int) $mask) || $mask < 1 || $mask > (false !== strpos($v, ':') ? 128 : 32)) {
+                                        return true;
+                                    }
+                                }
+
+                                return !filter_var($v, FILTER_VALIDATE_IP);
+                            })
+                            ->thenInvalid('Invalid proxy IP "%s"')
+                        ->end()
+                    ->end()
                 ->end()
                 ->scalarNode('ide')->defaultNull()->end()
                 ->booleanNode('test')->end()
@@ -197,6 +230,23 @@ class Configuration implements ConfigurationInterface
                         ->booleanNode('only_exceptions')->defaultFalse()->end()
                         ->booleanNode('only_master_requests')->defaultFalse()->end()
                         ->scalarNode('dsn')->defaultValue('file:%kernel.cache_dir%/profiler')->end()
+                        ->arrayNode('matcher')
+                            ->setDeprecated('The "profiler.matcher" configuration key has been deprecated in Symfony 3.4 and it will be removed in 4.0.')
+                            ->canBeEnabled()
+                            ->performNoDeepMerging()
+                            ->fixXmlConfig('ip')
+                            ->children()
+                                ->scalarNode('path')
+                                    ->info('use the urldecoded format')
+                                    ->example('^/path to resource/')
+                                ->end()
+                                ->scalarNode('service')->end()
+                                ->arrayNode('ips')
+                                    ->beforeNormalization()->ifString()->then(function ($v) { return array($v); })->end()
+                                    ->prototype('scalar')->end()
+                                ->end()
+                            ->end()
+                        ->end()
                     ->end()
                 ->end()
             ->end()
@@ -242,7 +292,6 @@ class Configuration implements ConfigurationInterface
                                     ->end()
                                     ->enumNode('type')
                                         ->values(array('workflow', 'state_machine'))
-                                        ->defaultValue('state_machine')
                                     ->end()
                                     ->arrayNode('marking_store')
                                         ->fixXmlConfig('argument')
@@ -422,6 +471,10 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('gc_divisor')->end()
                         ->scalarNode('gc_probability')->defaultValue(1)->end()
                         ->scalarNode('gc_maxlifetime')->end()
+                        ->booleanNode('use_strict_mode')
+                            ->defaultTrue()
+                            ->setDeprecated('The "%path%.%node%" option is enabled by default and deprecated since Symfony 3.4. It will be always enabled in 4.0.')
+                        ->end()
                         ->scalarNode('save_path')->defaultValue('%kernel.cache_dir%/sessions')->end()
                         ->integerNode('metadata_update_threshold')
                             ->defaultValue('0')
@@ -653,7 +706,19 @@ class Configuration implements ConfigurationInterface
                     ->info('validation configuration')
                     ->{!class_exists(FullStack::class) && class_exists(Validation::class) ? 'canBeDisabled' : 'canBeEnabled'}()
                     ->children()
-                        ->scalarNode('cache')->end()
+                        ->scalarNode('cache')
+                            // Can be removed in 4.0, when validator.mapping.cache.doctrine.apc is removed
+                            ->setDeprecated('The "%path%.%node%" option is deprecated since Symfony 3.2 and will be removed in 4.0. Configure the "cache.validator" service under "framework.cache.pools" instead.')
+                            ->beforeNormalization()
+                                ->ifString()->then(function ($v) {
+                                    if ('validator.mapping.cache.doctrine.apc' === $v && !class_exists('Doctrine\Common\Cache\ApcCache')) {
+                                        throw new LogicException('Doctrine APC cache for the validator cannot be enabled as the Doctrine Cache package is not installed.');
+                                    }
+
+                                    return $v;
+                                })
+                            ->end()
+                        ->end()
                         ->booleanNode('enable_annotations')->{!class_exists(FullStack::class) && class_exists(Annotation::class) ? 'defaultTrue' : 'defaultFalse'}()->end()
                         ->arrayNode('static_method')
                             ->defaultValue(array('loadValidatorMetadata'))
@@ -707,6 +772,9 @@ class Configuration implements ConfigurationInterface
                     ->{!class_exists(FullStack::class) && class_exists(Serializer::class) ? 'canBeDisabled' : 'canBeEnabled'}()
                     ->children()
                         ->booleanNode('enable_annotations')->{!class_exists(FullStack::class) && class_exists(Annotation::class) ? 'defaultTrue' : 'defaultFalse'}()->end()
+                        ->scalarNode('cache')
+                            ->setDeprecated('The "%path%.%node%" option is deprecated since Symfony 3.1 and will be removed in 4.0. Configure the "cache.serializer" service under "framework.cache.pools" instead.')
+                        ->end()
                         ->scalarNode('name_converter')->end()
                         ->scalarNode('circular_reference_handler')->end()
                         ->arrayNode('mapping')

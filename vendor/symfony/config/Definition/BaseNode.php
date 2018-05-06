@@ -34,9 +34,12 @@ abstract class BaseNode implements NodeInterface
     protected $attributes = array();
 
     /**
+     * @param string|null        $name   The name of the node
+     * @param NodeInterface|null $parent The parent of this node
+     *
      * @throws \InvalidArgumentException if the name contains a period
      */
-    public function __construct(?string $name, NodeInterface $parent = null)
+    public function __construct($name, NodeInterface $parent = null)
     {
         if (false !== strpos($name = (string) $name, '.')) {
             throw new \InvalidArgumentException('The name must not contain ".".');

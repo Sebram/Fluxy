@@ -21,7 +21,7 @@ final class FormatExceptionContext
     private $lineno;
     private $cursor;
 
-    public function __construct(string $data, string $path, int $lineno, int $cursor)
+    public function __construct($data, $path, $lineno, $cursor)
     {
         $this->data = $data;
         $this->path = $path;

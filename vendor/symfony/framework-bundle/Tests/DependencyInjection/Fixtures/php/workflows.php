@@ -41,6 +41,7 @@ $container->loadFromExtension('framework', array(
             ),
         ),
         'pull_request' => array(
+            'type' => 'state_machine',
             'marking_store' => array(
                 'type' => 'single_state',
             ),

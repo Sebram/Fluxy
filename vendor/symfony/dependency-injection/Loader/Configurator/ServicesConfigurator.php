@@ -20,6 +20,8 @@ use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 
 /**
  * @author Nicolas Grekas <p@tchwork.com>
+ *
+ * @method InstanceofConfigurator instanceof($fqcn)
  */
 class ServicesConfigurator extends AbstractConfigurator
 {
@@ -41,16 +43,22 @@ class ServicesConfigurator extends AbstractConfigurator
 
     /**
      * Defines a set of defaults for following service definitions.
+     *
+     * @return DefaultsConfigurator
      */
-    final public function defaults(): DefaultsConfigurator
+    final public function defaults()
     {
         return new DefaultsConfigurator($this, $this->defaults = new Definition());
     }
 
     /**
      * Defines an instanceof-conditional to be applied to following service definitions.
+     *
+     * @param string $fqcn
+     *
+     * @return InstanceofConfigurator
      */
-    final public function instanceof(string $fqcn): InstanceofConfigurator
+    final protected function setInstanceof($fqcn)
     {
         $this->instanceof[$fqcn] = $definition = new ChildDefinition('');
 
@@ -59,8 +67,13 @@ class ServicesConfigurator extends AbstractConfigurator
 
     /**
      * Registers a service.
+     *
+     * @param string      $id
+     * @param string|null $class
+     *
+     * @return ServiceConfigurator
      */
-    final public function set(string $id, string $class = null): ServiceConfigurator
+    final public function set($id, $class = null)
     {
         $defaults = $this->defaults;
         $allowParent = !$defaults->getChanges() && empty($this->instanceof);
@@ -79,8 +92,13 @@ class ServicesConfigurator extends AbstractConfigurator
 
     /**
      * Creates an alias.
+     *
+     * @param string $id
+     * @param string $referencedId
+     *
+     * @return AliasConfigurator
      */
-    final public function alias(string $id, string $referencedId): AliasConfigurator
+    final public function alias($id, $referencedId)
     {
         $ref = static::processValue($referencedId, true);
         $alias = new Alias((string) $ref, $this->defaults->isPublic());
@@ -91,8 +109,13 @@ class ServicesConfigurator extends AbstractConfigurator
 
     /**
      * Registers a PSR-4 namespace using a glob pattern.
+     *
+     * @param string $namespace
+     * @param string $resource
+     *
+     * @return PrototypeConfigurator
      */
-    final public function load(string $namespace, string $resource): PrototypeConfigurator
+    final public function load($namespace, $resource)
     {
         $allowParent = !$this->defaults->getChanges() && empty($this->instanceof);
 
@@ -102,9 +125,13 @@ class ServicesConfigurator extends AbstractConfigurator
     /**
      * Gets an already defined service definition.
      *
+     * @param string $id
+     *
+     * @return ServiceConfigurator
+     *
      * @throws ServiceNotFoundException if the service definition does not exist
      */
-    final public function get(string $id): ServiceConfigurator
+    final public function get($id)
     {
         $allowParent = !$this->defaults->getChanges() && empty($this->instanceof);
         $definition = $this->container->getDefinition($id);
@@ -114,8 +141,13 @@ class ServicesConfigurator extends AbstractConfigurator
 
     /**
      * Registers a service.
+     *
+     * @param string      $id
+     * @param string|null $class
+     *
+     * @return ServiceConfigurator
      */
-    final public function __invoke(string $id, string $class = null): ServiceConfigurator
+    final public function __invoke($id, $class = null)
     {
         return $this->set($id, $class);
     }

@@ -17,10 +17,10 @@ class ProjectExtension implements ExtensionInterface
             $config = array();
         }
 
-        $configuration->register('project.service.bar', 'FooClass')->setPublic(true);
+        $configuration->setDefinition('project.service.bar', new Definition('FooClass'));
         $configuration->setParameter('project.parameter.bar', isset($config['foo']) ? $config['foo'] : 'foobar');
 
-        $configuration->register('project.service.foo', 'FooClass')->setPublic(true);
+        $configuration->setDefinition('project.service.foo', new Definition('FooClass'));
         $configuration->setParameter('project.parameter.foo', isset($config['foo']) ? $config['foo'] : 'foobar');
 
         return $configuration;

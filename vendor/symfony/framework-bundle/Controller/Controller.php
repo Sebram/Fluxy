@@ -29,11 +29,13 @@ abstract class Controller implements ContainerAwareInterface
     /**
      * Gets a container configuration parameter by its name.
      *
+     * @param string $name The parameter name
+     *
      * @return mixed
      *
-     * @final
+     * @final since version 3.4
      */
-    protected function getParameter(string $name)
+    protected function getParameter($name)
     {
         return $this->container->getParameter($name);
     }

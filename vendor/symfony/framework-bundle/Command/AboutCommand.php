@@ -11,7 +11,6 @@
 
 namespace Symfony\Bundle\FrameworkBundle\Command;
 
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Helper;
 use Symfony\Component\Console\Helper\TableSeparator;
 use Symfony\Component\Console\Input\InputInterface;
@@ -25,9 +24,9 @@ use Symfony\Component\HttpKernel\KernelInterface;
  *
  * @author Roland Franssen <franssen.roland@gmail.com>
  *
- * @final
+ * @final since version 3.4
  */
-class AboutCommand extends Command
+class AboutCommand extends ContainerAwareCommand
 {
     protected static $defaultName = 'about';
 
@@ -103,12 +102,12 @@ EOT
         $io->table(array(), $rows);
     }
 
-    private static function formatPath(string $path, string $baseDir = null): string
+    private static function formatPath($path, $baseDir = null)
     {
         return null !== $baseDir ? preg_replace('~^'.preg_quote($baseDir, '~').'~', '.', $path) : $path;
     }
 
-    private static function formatFileSize(string $path): string
+    private static function formatFileSize($path)
     {
         if (is_file($path)) {
             $size = filesize($path) ?: 0;
@@ -122,14 +121,14 @@ EOT
         return Helper::formatMemory($size);
     }
 
-    private static function isExpired(string $date): bool
+    private static function isExpired($date)
     {
         $date = \DateTime::createFromFormat('m/Y', $date);
 
         return false !== $date && new \DateTime() > $date->modify('last day of this month 23:59:59');
     }
 
-    private static function getDotenvVars(): array
+    private static function getDotenvVars()
     {
         $vars = array();
         foreach (explode(',', getenv('SYMFONY_DOTENV_VARS')) as $name) {

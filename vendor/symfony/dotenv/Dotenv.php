@@ -45,11 +45,10 @@ final class Dotenv
      * @throws FormatException when a file has a syntax error
      * @throws PathException   when a file does not exist or is not readable
      */
-    public function load(string $path, string ...$paths): void
+    public function load($path/*, ...$paths*/)
     {
-        array_unshift($paths, $path);
-
-        foreach ($paths as $path) {
+        // func_get_args() to be replaced by a variadic argument for Symfony 4.0
+        foreach (func_get_args() as $path) {
             if (!is_readable($path) || is_dir($path)) {
                 throw new PathException($path);
             }
@@ -65,7 +64,7 @@ final class Dotenv
      *
      * @param array $values An array of env variables
      */
-    public function populate(array $values): void
+    public function populate($values)
     {
         $loadedVars = array_flip(explode(',', getenv('SYMFONY_DOTENV_VARS')));
         unset($loadedVars['']);
@@ -104,7 +103,7 @@ final class Dotenv
      *
      * @throws FormatException when a file has a syntax error
      */
-    public function parse(string $data, string $path = '.env'): array
+    public function parse($data, $path = '.env')
     {
         $this->path = $path;
         $this->data = str_replace(array("\r\n", "\r"), "\n", $data);

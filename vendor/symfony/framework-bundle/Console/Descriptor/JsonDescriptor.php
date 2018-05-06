@@ -207,7 +207,13 @@ class JsonDescriptor extends Descriptor
         );
     }
 
-    private function getContainerDefinitionData(Definition $definition, bool $omitTags = false, bool $showArguments = false): array
+    /**
+     * @param Definition $definition
+     * @param bool       $omitTags
+     *
+     * @return array
+     */
+    private function getContainerDefinitionData(Definition $definition, $omitTags = false, $showArguments = false)
     {
         $data = array(
             'class' => (string) $definition->getClass(),
@@ -219,6 +225,13 @@ class JsonDescriptor extends Descriptor
             'autowire' => $definition->isAutowired(),
             'autoconfigure' => $definition->isAutoconfigured(),
         );
+
+        // forward compatibility with DependencyInjection component in version 4.0
+        if (method_exists($definition, 'getAutowiringTypes')) {
+            foreach ($definition->getAutowiringTypes(false) as $autowiringType) {
+                $data['autowiring_types'][] = $autowiringType;
+            }
+        }
 
         if ($showArguments) {
             $data['arguments'] = $this->describeValue($definition->getArguments(), $omitTags, $showArguments);
@@ -261,7 +274,10 @@ class JsonDescriptor extends Descriptor
         return $data;
     }
 
-    private function getContainerAliasData(Alias $alias): array
+    /**
+     * @return array
+     */
+    private function getContainerAliasData(Alias $alias)
     {
         return array(
             'service' => (string) $alias,
@@ -269,7 +285,13 @@ class JsonDescriptor extends Descriptor
         );
     }
 
-    private function getEventDispatcherListenersData(EventDispatcherInterface $eventDispatcher, string $event = null): array
+    /**
+     * @param EventDispatcherInterface $eventDispatcher
+     * @param string|null              $event
+     *
+     * @return array
+     */
+    private function getEventDispatcherListenersData(EventDispatcherInterface $eventDispatcher, $event = null)
     {
         $data = array();
 
@@ -295,7 +317,13 @@ class JsonDescriptor extends Descriptor
         return $data;
     }
 
-    private function getCallableData($callable, array $options = array()): array
+    /**
+     * @param callable $callable
+     * @param array    $options
+     *
+     * @return array
+     */
+    private function getCallableData($callable, array $options = array())
     {
         $data = array();
 

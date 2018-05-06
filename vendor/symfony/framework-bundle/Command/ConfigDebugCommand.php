@@ -17,7 +17,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Console\Exception\LogicException;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -25,7 +24,7 @@ use Symfony\Component\Yaml\Yaml;
  *
  * @author Grégoire Pineau <lyrixx@lyrixx.info>
  *
- * @final
+ * @final since version 3.4
  */
 class ConfigDebugCommand extends AbstractConfigCommand
 {
@@ -113,7 +112,7 @@ EOF
         $io->writeln(Yaml::dump($config, 10));
     }
 
-    private function compileContainer(): ContainerBuilder
+    private function compileContainer()
     {
         $kernel = clone $this->getApplication()->getKernel();
         $kernel->boot();
@@ -129,11 +128,13 @@ EOF
     /**
      * Iterate over configuration until the last step of the given path.
      *
+     * @param array $config A bundle configuration
+     *
      * @throws LogicException If the configuration does not exist
      *
      * @return mixed
      */
-    private function getConfigForPath(array $config, string $path, string $alias)
+    private function getConfigForPath(array $config, $path, $alias)
     {
         $steps = explode('.', $path);
 

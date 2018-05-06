@@ -66,6 +66,14 @@ class FrameworkBundle extends Bundle
         }
         ErrorHandler::register(null, false)->throwAt($this->container->getParameter('debug.error_handler.throw_at'), true);
 
+        if ($this->container->hasParameter('kernel.trusted_proxies')) {
+            @trigger_error('The "kernel.trusted_proxies" parameter is deprecated since Symfony 3.3 and will be removed in 4.0. Use the Request::setTrustedProxies() method in your front controller instead.', E_USER_DEPRECATED);
+
+            if ($trustedProxies = $this->container->getParameter('kernel.trusted_proxies')) {
+                Request::setTrustedProxies($trustedProxies, Request::getTrustedHeaderSet());
+            }
+        }
+
         if ($this->container->getParameter('kernel.http_method_override')) {
             Request::enableHttpMethodParameterOverride();
         }
@@ -100,7 +108,10 @@ class FrameworkBundle extends Bundle
         $container->addCompilerPass(new AddAnnotationsCachedReaderPass(), PassConfig::TYPE_AFTER_REMOVING, -255);
         $this->addCompilerPassIfExists($container, AddValidatorInitializersPass::class);
         $this->addCompilerPassIfExists($container, AddConsoleCommandPass::class);
-        $this->addCompilerPassIfExists($container, TranslatorPass::class);
+        if (class_exists(TranslatorPass::class)) {
+            // Arguments to be removed in 4.0, relying on the default values
+            $container->addCompilerPass(new TranslatorPass('translator.default', 'translation.loader'));
+        }
         $container->addCompilerPass(new LoggingTranslatorPass());
         $container->addCompilerPass(new AddExpressionLanguageProvidersPass());
         $this->addCompilerPassIfExists($container, TranslationExtractorPass::class);

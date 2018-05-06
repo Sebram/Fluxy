@@ -13,6 +13,8 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 /**
  * @author Nicolas Grekas <p@tchwork.com>
+ *
+ * @method InstanceofConfigurator instanceof(string $fqcn)
  */
 class InstanceofConfigurator extends AbstractServiceConfigurator
 {
@@ -29,8 +31,12 @@ class InstanceofConfigurator extends AbstractServiceConfigurator
 
     /**
      * Defines an instanceof-conditional to be applied to following service definitions.
+     *
+     * @param string $fqcn
+     *
+     * @return InstanceofConfigurator
      */
-    final public function instanceof(string $fqcn): InstanceofConfigurator
+    final protected function setInstanceof($fqcn)
     {
         return $this->parent->instanceof($fqcn);
     }

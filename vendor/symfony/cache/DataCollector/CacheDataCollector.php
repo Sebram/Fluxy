@@ -104,7 +104,10 @@ class CacheDataCollector extends DataCollector implements LateDataCollectorInter
         return $this->data['instances']['calls'];
     }
 
-    private function calculateStatistics(): array
+    /**
+     * @return array
+     */
+    private function calculateStatistics()
     {
         $statistics = array();
         foreach ($this->data['instances']['calls'] as $name => $calls) {
@@ -156,7 +159,10 @@ class CacheDataCollector extends DataCollector implements LateDataCollectorInter
         return $statistics;
     }
 
-    private function calculateTotalStatistics(): array
+    /**
+     * @return array
+     */
+    private function calculateTotalStatistics()
     {
         $statistics = $this->getStatistics();
         $totals = array(

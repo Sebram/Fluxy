@@ -12,7 +12,6 @@
 namespace Symfony\Bundle\FrameworkBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Console\Helper\DescriptorHelper;
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
@@ -25,15 +24,26 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  *
  * @author Matthieu Auger <mail@matthieuauger.com>
  *
- * @final
+ * @final since version 3.4
  */
-class EventDispatcherDebugCommand extends Command
+class EventDispatcherDebugCommand extends ContainerAwareCommand
 {
     protected static $defaultName = 'debug:event-dispatcher';
     private $dispatcher;
 
-    public function __construct(EventDispatcherInterface $dispatcher)
+    /**
+     * @param EventDispatcherInterface $dispatcher
+     */
+    public function __construct($dispatcher = null)
     {
+        if (!$dispatcher instanceof EventDispatcherInterface) {
+            @trigger_error(sprintf('%s() expects an instance of "%s" as first argument since Symfony 3.4. Not passing it is deprecated and will throw a TypeError in 4.0.', __METHOD__, EventDispatcherInterface::class), E_USER_DEPRECATED);
+
+            parent::__construct($dispatcher);
+
+            return;
+        }
+
         parent::__construct();
 
         $this->dispatcher = $dispatcher;
@@ -71,6 +81,11 @@ EOF
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        // BC to be removed in 4.0
+        if (null === $this->dispatcher) {
+            $this->dispatcher = $this->getEventDispatcher();
+        }
+
         $io = new SymfonyStyle($input, $output);
 
         $options = array();
@@ -89,5 +104,17 @@ EOF
         $options['raw_text'] = $input->getOption('raw');
         $options['output'] = $io;
         $helper->describe($io, $this->dispatcher, $options);
+    }
+
+    /**
+     * Loads the Event Dispatcher from the container.
+     *
+     * BC to removed in 4.0
+     *
+     * @return EventDispatcherInterface
+     */
+    protected function getEventDispatcher()
+    {
+        return $this->getContainer()->get('event_dispatcher');
     }
 }
