@@ -1,5 +1,5 @@
 
-Check => http://localhost/core_api/public/documentation to get Api Doc
+Check => http://localhost/fluxy/public/documentation to get Api Doc
 
 
 AUTHENTICATE WITH FOS OAUTH AND FOS USER
@@ -7,17 +7,17 @@ AUTHENTICATE WITH FOS OAUTH AND FOS USER
 
 SIGNUP
 ------
-requete http://localhost/core_api/public/users/new/{email}/{username}/{password}
+requete http://localhost/fluxy/public/users/new/{email}/{username}/{password}
 	=>  return Array ( User informations and Client response if registred )
 
-requete http://localhost/core_api/public/users/auth/{email}/{password}
+requete http://localhost/fluxy/public/users/auth/{email}/{password}
 	=> return Array (Token informations);
 
 
 
 DO QUERIES PROTECTED BY TOKEN
 -----------------------------
-http GET http://localhost/core_api/public/users/2 \
+http GET http://localhost/fluxy/public/users/2 \
 	"Authorization:Bearer ZTg0YmRiZGViNmFkOWYyZDk4NmM5YzMxNGFiNDZhYzFjNjA5OGNjNDNjYmRlN2IzYmFiYzdhMzUxZTdjNjZiOQ"
 
 
