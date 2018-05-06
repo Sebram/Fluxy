@@ -273,6 +273,9 @@ class FluxyUserController extends FOSRestController
     }
 
 
+
+
+
     private function checkAuthAndGetErrorResponse(Request $request)
     {
         $tokenManager = $this->get('fos_oauth_server.access_token_manager.default');
