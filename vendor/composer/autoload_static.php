@@ -44,6 +44,7 @@ class ComposerStaticInitf134130e4729d1330229b5178121da9d
             'Symfony\\Bundle\\WebServerBundle\\' => 31,
             'Symfony\\Bundle\\MakerBundle\\' => 27,
             'Symfony\\Bundle\\FrameworkBundle\\' => 31,
+            'Sensio\\Bundle\\FrameworkExtraBundle\\' => 35,
         ),
         'P' => 
         array (
@@ -56,6 +57,9 @@ class ComposerStaticInitf134130e4729d1330229b5178121da9d
         'D' => 
         array (
             'Doctrine\\Common\\Inflector\\' => 26,
+            'Doctrine\\Common\\Cache\\' => 22,
+            'Doctrine\\Common\\Annotations\\' => 28,
+            'Doctrine\\Common\\' => 16,
         ),
         'A' => 
         array (
@@ -173,6 +177,10 @@ class ComposerStaticInitf134130e4729d1330229b5178121da9d
         array (
             0 => __DIR__ . '/..' . '/symfony/framework-bundle',
         ),
+        'Sensio\\Bundle\\FrameworkExtraBundle\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/sensio/framework-extra-bundle',
+        ),
         'Psr\\SimpleCache\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/simple-cache/src',
@@ -197,6 +205,18 @@ class ComposerStaticInitf134130e4729d1330229b5178121da9d
         array (
             0 => __DIR__ . '/..' . '/doctrine/inflector/lib/Doctrine/Common/Inflector',
         ),
+        'Doctrine\\Common\\Cache\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/doctrine/cache/lib/Doctrine/Common/Cache',
+        ),
+        'Doctrine\\Common\\Annotations\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/doctrine/annotations/lib/Doctrine/Common/Annotations',
+        ),
+        'Doctrine\\Common\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/doctrine/common/lib/Doctrine/Common',
+        ),
         'App\\Tests\\' => 
         array (
             0 => __DIR__ . '/../..' . '/tests',
@@ -204,6 +224,20 @@ class ComposerStaticInitf134130e4729d1330229b5178121da9d
         'App\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src',
+        ),
+    );
+
+    public static $prefixesPsr0 = array (
+        'D' => 
+        array (
+            'Doctrine\\Common\\Lexer\\' => 
+            array (
+                0 => __DIR__ . '/..' . '/doctrine/lexer/lib',
+            ),
+            'Doctrine\\Common\\Collections\\' => 
+            array (
+                0 => __DIR__ . '/..' . '/doctrine/collections/lib',
+            ),
         ),
     );
 
@@ -222,6 +256,7 @@ class ComposerStaticInitf134130e4729d1330229b5178121da9d
         return \Closure::bind(function () use ($loader) {
             $loader->prefixLengthsPsr4 = ComposerStaticInitf134130e4729d1330229b5178121da9d::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInitf134130e4729d1330229b5178121da9d::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInitf134130e4729d1330229b5178121da9d::$prefixesPsr0;
             $loader->classMap = ComposerStaticInitf134130e4729d1330229b5178121da9d::$classMap;
 
         }, null, ClassLoader::class);
