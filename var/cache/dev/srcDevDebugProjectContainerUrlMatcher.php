@@ -214,17 +214,29 @@ class srcDevDebugProjectContainerUrlMatcher extends Symfony\Bundle\FrameworkBund
 
         }
 
-        // homefluxy_keycheck_home
-        if ('/keycheck' === $pathinfo) {
-            $ret = array (  '_controller' => 'App\\Fluxy\\KeycheckBundle\\Controller\\FluxyKeycheckController::homeAction',  '_format' => 'json',  '_route' => 'homefluxy_keycheck_home',);
+        // uploadfluxy_keycheck_upload
+        if ('/upload' === $pathinfo) {
+            $ret = array (  '_controller' => 'App\\Fluxy\\KeycheckBundle\\Controller\\FluxyKeycheckController::uploadAction',  '_format' => 'json',  '_route' => 'uploadfluxy_keycheck_upload',);
             if (!in_array($canonicalMethod, array('GET'))) {
                 $allow = array_merge($allow, array('GET'));
-                goto not_homefluxy_keycheck_home;
+                goto not_uploadfluxy_keycheck_upload;
             }
 
             return $ret;
         }
-        not_homefluxy_keycheck_home:
+        not_uploadfluxy_keycheck_upload:
+
+        // homefluxy_import_home
+        if ('/import' === $pathinfo) {
+            $ret = array (  '_controller' => 'App\\Fluxy\\KeycheckBundle\\Controller\\FluxyKeycheckController::homeAction',  '_format' => 'json',  '_route' => 'homefluxy_import_home',);
+            if (!in_array($canonicalMethod, array('GET'))) {
+                $allow = array_merge($allow, array('GET'));
+                goto not_homefluxy_import_home;
+            }
+
+            return $ret;
+        }
+        not_homefluxy_import_home:
 
         if ('/' === $pathinfo && !$allow) {
             throw new Symfony\Component\Routing\Exception\NoConfigurationException();
