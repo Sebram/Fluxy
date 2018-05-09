@@ -25,7 +25,7 @@ class Config
 		{
 				
 				//$arraydefine = array( 'passimmolocal', 'localhost', 'root', '' );  
-			$arraydefine = array( 'passimmopr_pro', 'localhost', 'root', 'bramskone' );  
+			$arraydefine = array( 'database', 'host', 'user', 'password' );  
 				return $arraydefine ;
 		}
 	}
