@@ -1,0 +1,201 @@
+15 Tips to Optimize Your PHP Script for Better Performance for Developers
+by LUKE P. ISSAC on APRIL 1, 2014
+ 
+
+If you are a developer, it is essential for you to optimize your script early in the development process itself. Following the best practices while coding your PHP script is a good starting point to write a well optimized PHP code.
+
+This tutorial provides few tips to optimize PHP code from a developer point of view.
+
+1. Use Native PHP Functions
+As much as possible, try to use native PHP functions rather than writing your own functions to achieve the objective. For example, you can use range( b, k) to get an array of alphabets starting from b to k in sequence, if it is only needed once in the script rather than declaring an array with these values in a function and returning it on its call.
+
+2. Use Single Quotes
+Using single quotes ( ‘ ‘ ) is faster than using double quotes( ” ” ) if you are going to keep only the string inside it avoiding any variables. Double quotes checks for the presence of variable and adds little bit of overhead.
+
+3. Use = = =
+Use “= = =” instead of “= =”, as the former strictly checks for a closed range which makes it faster.
+
+4. Use Appropriate Str Functions
+str_replace is faster than preg_replace, but strtr is faster than str_replace by a factor of 4.
+
+5. Calculate Only Once
+Calculate and assign the value to the variable if that value is getting used numerous time rather than calculating it again and again where it is being used.
+
+For example, the following will degrade the performance.
+
+for( $i=0; i< count($arrA); $i++){
+  echo count($arrA);
+}
+The script below will perform much better.
+
+$len = count($arrA);
+for( $i=0; i< $len; $i++){
+  echo $len;
+}
+6. Pass Reference to Function
+Pass reference to the function if it does not affect your logic. A function manipulating the reference is faster than those manipulating the value been passed as here one more copy of the value is getting created. Especially it adds overhead when the value passed by you is a big array.
+
+For example, let us create a function in two different way to increment by 1, each element of an array having values 0 to 99.
+
+<?php
+  // passing by reference
+  function  computeValue( &$param ){
+  	// Something goes here
+  	foreach( $param as $k => $value){
+  	  $param[$k] = $value + 1;
+  	}
+  }
+  $x = array();
+  for( $i =0; $i<99; $i++){
+    $x[$i] = $i;
+  }
+  computeValue( $x);
+  
+  // array with 100 elements each incremented by 1
+  print_r( $x );
+
+?>                   		 
+The function above works faster than the function below although both will produce the same result ( increment each element of the array by 1. )
+
+  <?php
+  	// passing by value
+    function  computeValue( $param ){
+      // Something goes here
+      foreach( $param as $k => $value){
+      	$param[$k] = $value + 1;
+      }
+      
+      return $param;
+    }
+    $x = array();
+    for( $i =0; $i<99; $i++){
+      $x[$i] = $i;
+    }
+	// array with 100 elements each incremented by 1
+    print_r(computeValue( $x));
+    
+  ?>
+7. Create Classes Only When its Required
+Don’t create classes and method until and unless its really needed, used and reused as well.
+
+8. Disable Debugging Messages
+File operations are expensive. So, if you have written lot of custom functions to log errors and warning during your development process, make sure you remove them before you push the code to production.
+
+9. Use Caching Techniques
+Use cache to reduce the load of database operations as well as the script compilation. We can use memcache for the reducing database load and APC for opcode caching and intermediate code optimization.
+
+10. Close the Connection
+Get into the habit to unset the variables and close database connection in your PHP code. It saves memory.
+
+11. Reduce Number of Hits to DB
+Try to reduce the number of hits to the database. Make queries aggregate so that you call the database less number of times. For example:
+
+<?php
+  $con=mysqli_connect("localhost","username","somepassword","anydb");
+  
+  if (mysqli_connect_errno())
+  {
+    echo "Failed to connect to MySQL" ;
+	mysqli_connect_error(); 
+  }
+
+  function insertValue( $val ){
+    mysqli_query($con,"INSERT INTO tableX (someInteger) VALUES ( $val )");
+  }
+  
+  for( $i =0; $i<99; $i++){
+    //  Calling function to execute query one by one 
+    insertValue( $i );
+  }					
+  // Closing the connection as best practice		
+  mysqli_close($con);
+
+?> 
+The script above is much slower than the script below:
+
+<?php
+  $con=mysqli_connect("localhost","username","somepassword","anydb");
+  if (mysqli_connect_errno())
+  {
+  	echo "Failed to connect to MySQL" ;
+  	mysqli_connect_error(); 
+  }
+   
+  function insertValues( $val ){
+     // Creating query for inserting complete array in single execution.
+    $query= " INSERT INTO tableX(someInteger) VALUES .implode(',', $val)";      
+    mysqli_query($con, $query);
+  }
+  
+  $data = array();
+  for( $i =0; $i<99; $i++){
+    // Creating an array of data to be inserted.
+    $data[ ]  =   '(" ' . $i. '")' ;
+  }
+  // Inserting the data in a single call
+  insertValues( $data );
+  // Closing the connection as a best practice
+  mysqli_close($con);
+
+?> 
+12. Frequently Used Switch Cases
+Keep most frequently used switch cases on the top.
+
+13. Use Methods in Derived Classes
+Methods in derived classes are faster than base classes. For example, let there be a function in both base class and derived class for performing task1. It is named as “forTask1” in base class and “forTask1again” in derived class, so that they will not override.
+
+Call to the function “forTask1again( )” which is in derived class will work faster than call to the function “forTask1( )” as it is from base class.
+
+<?php
+  class someBaseClass
+  {
+  	public function forTask1($string)
+  	{
+  		// perform task 1
+  	}
+  	public function forTask2( )
+  	{
+  		// perform task 2
+  	}
+  }
+  
+  class derivedClass extends someBaseClass
+  {
+  	public function forTask1again($string)
+  	{
+  		//perform task 1 same as the function in base class.
+  	}
+  	public function forTask3($string)
+  	{
+  		//perform task 3
+  	}
+  }
+  //Instantiating the derived class below.
+  $objDerivedClass = new derivedClass( ); 
+  
+  // The call below works slow for task1 as it is from base class.
+  $resultTask1 = $objDerivedClass->forTask1( );
+  
+  // The call below works faster for task1 as 
+  // it is from derived class.
+  $sameResultTask1 = $objDerivedClass->forTask1again();
+?>
+14. Use JSON
+Use JSON instead of XML while working with web services as there are native php function like json_encode( ) and json_decode( ) which are very fast. If you are bound to have XML form of data, then use regular expression to parse it instead of DOM manipulation.
+
+15. Use isset
+Use isset( ) where ever possible instead of using count( ), strlen( ), sizeof( ) to check whether the value returned is greater than 0.
+
+For example, let us assume that you have a function which returns an array with values or a NULL array. Now you want to check whether the returned array is with values or not, then use the following:
+
+if(isset($returnValue)){
+  // do something here
+}
+In this case, use the above code block, instead of the following:
+
+if(count($returnValue) > 0){
+  // do something here
+}
+
+
+source:https://www.thegeekstuff.com/2014/04/optimize-php-code
