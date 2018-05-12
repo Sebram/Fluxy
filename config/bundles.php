@@ -20,5 +20,5 @@ return [
     Nelmio\ApiDocBundle\NelmioApiDocBundle::class => ['all' => true],
     FOS\OAuthServerBundle\FOSOAuthServerBundle::class => ['all' => true],
     App\Fluxy\UserBundle\FluxyUserBundle::class => ['all' => true],
-    App\Fluxy\KeycheckBundle\FluxyKeycheckBundle::class => ['all' => true],
+    App\Fluxy\FluxyBundle\FluxyBundle::class => ['all' => true],
 ];
