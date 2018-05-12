@@ -1,0 +1,63 @@
+<html>
+<head>
+    <title>Fluxy KeyCheck</title>
+</head>
+<body>
+<strong>FLUXY</strong> <a href="../../home">/home</a><a href="#">/keycheck/match</a>
+ <strong> ... Now! Match => Csv file keys <em>( {{files[1]}} )</em> with Table column keys <em>( {{files[2]}} )</em> ! </strong> <a href="../../../uploaded/{{ filename }}">Voir le contenu du fichier</a>
+<hr style="border-top: dotted 1px;" />
+
+{% include '/fluxy/menu/menu1.html.twig' %}
+
+<hr style="border-top: dotted 1px;" />
+
+<br>
+<div>
+<strong>
+	&nbsp;  Faite les correspondances dans le tableaux ci-dessous:
+</strong> 
+<br>
+<br>
+<div class="uploadform" style="width:300px;text-align:center">
+	<form action="../../../load" method="POST">
+		<input type="hidden" name="fileid" value="{{ files[0] }}">
+		<fieldset>
+			<table class="table table-condensed">
+				{% set i = 0 %}
+				{% for column in columns %}
+					<tr>
+						{% if i != 0 %}
+							<td style="width:33.3%;text-align:center">
+									<input type ="text" value="{{ column }}" name="tableref-{{ i }}" class="form-control" readonly>
+							</td>
+							<td style="width:33.3%;text-align:center"> = </td>
+							<td style="width:33.3%;">
+								<input list="csvref"  type="text" name="csvref-{{ i }}" class="form-control" value=""> 
+								{% set j = 0 %}
+								<datalist id="csvref">
+									{% for csvkey in csvkeys %}
+										{% if j < (csvkeys|length)-1 %}
+											<option value="@{{ csvkey }}">
+										{% endif %}
+									    {% set j = j + 1 %}
+									{% endfor %}
+								</datalist>
+							</td>
+						{% endif %}
+					</tr>
+					{% set i = i + 1 %}
+				{% endfor %}
+			</table>
+			<hr>
+			<div style="margin-left:300px">
+				<input type="submit">
+			</div>
+		</fieldset>
+	</form>
+</div>
+</div>
+<br>
+<br>
+<br>
+</body>
+</html>

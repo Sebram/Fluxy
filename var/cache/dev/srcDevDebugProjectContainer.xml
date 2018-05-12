@@ -28,7 +28,7 @@
       <parameter key="NelmioApiDocBundle">Nelmio\ApiDocBundle\NelmioApiDocBundle</parameter>
       <parameter key="FOSOAuthServerBundle">FOS\OAuthServerBundle\FOSOAuthServerBundle</parameter>
       <parameter key="FluxyUserBundle">App\Fluxy\UserBundle\FluxyUserBundle</parameter>
-      <parameter key="FluxyKeycheckBundle">App\Fluxy\KeycheckBundle\FluxyKeycheckBundle</parameter>
+      <parameter key="FluxyBundle">App\Fluxy\FluxyBundle\FluxyBundle</parameter>
     </parameter>
     <parameter key="kernel.bundles_metadata" type="collection">
       <parameter key="FrameworkBundle" type="collection">
@@ -126,10 +126,10 @@
         <parameter key="path">/Users/Sebram/Weborium/fluxy/src/Fluxy/UserBundle</parameter>
         <parameter key="namespace">App\Fluxy\UserBundle</parameter>
       </parameter>
-      <parameter key="FluxyKeycheckBundle" type="collection">
+      <parameter key="FluxyBundle" type="collection">
         <parameter key="parent">null</parameter>
-        <parameter key="path">/Users/Sebram/Weborium/fluxy/src/Fluxy/KeycheckBundle</parameter>
-        <parameter key="namespace">App\Fluxy\KeycheckBundle</parameter>
+        <parameter key="path">/Users/Sebram/Weborium/fluxy/src/Fluxy/FluxyBundle</parameter>
+        <parameter key="namespace">App\Fluxy\FluxyBundle</parameter>
       </parameter>
     </parameter>
     <parameter key="kernel.charset">UTF-8</parameter>
@@ -138,6 +138,7 @@
     <parameter key="container.dumper.inline_class_loader">true</parameter>
     <parameter key="env(DATABASE_URL)"></parameter>
     <parameter key="locale">en</parameter>
+    <parameter key="file_directory">/Users/Sebram/Weborium/fluxy/public/uploaded</parameter>
     <parameter key="fragment.renderer.hinclude.global_template">null</parameter>
     <parameter key="fragment.path">/_fragment</parameter>
     <parameter key="kernel.secret">%env(APP_SECRET)%</parameter>
@@ -1445,6 +1446,11 @@
           <argument>/Users/Sebram/Weborium/fluxy/vendor/symfony/form/Resources/config/validation.xml</argument>
           <argument>/Users/Sebram/Weborium/fluxy/vendor/friendsofsymfony/user-bundle/Resources/config/validation.xml</argument>
           <argument>/Users/Sebram/Weborium/fluxy/vendor/friendsofsymfony/oauth-server-bundle/Resources/config/validation.xml</argument>
+        </argument>
+      </call>
+      <call method="addYamlMappings">
+        <argument type="collection">
+          <argument>/Users/Sebram/Weborium/fluxy/src/Fluxy/FluxyBundle/Resources/config/validation.yml</argument>
         </argument>
       </call>
       <call method="enableAnnotationMapping">
@@ -3418,12 +3424,12 @@
         <argument>!FluxyUser</argument>
       </call>
       <call method="addPath">
-        <argument>/Users/Sebram/Weborium/fluxy/src/Fluxy/KeycheckBundle/Resources/views</argument>
-        <argument>FluxyKeycheck</argument>
+        <argument>/Users/Sebram/Weborium/fluxy/src/Fluxy/FluxyBundle/Resources/views</argument>
+        <argument>Fluxy</argument>
       </call>
       <call method="addPath">
-        <argument>/Users/Sebram/Weborium/fluxy/src/Fluxy/KeycheckBundle/Resources/views</argument>
-        <argument>!FluxyKeycheck</argument>
+        <argument>/Users/Sebram/Weborium/fluxy/src/Fluxy/FluxyBundle/Resources/views</argument>
+        <argument>!Fluxy</argument>
       </call>
       <call method="addPath">
         <argument>/Users/Sebram/Weborium/fluxy/templates</argument>
@@ -3629,12 +3635,12 @@
         <argument>!FluxyUser</argument>
       </call>
       <call method="addPath">
-        <argument>/Users/Sebram/Weborium/fluxy/src/Fluxy/KeycheckBundle/Resources/views</argument>
-        <argument>FluxyKeycheck</argument>
+        <argument>/Users/Sebram/Weborium/fluxy/src/Fluxy/FluxyBundle/Resources/views</argument>
+        <argument>Fluxy</argument>
       </call>
       <call method="addPath">
-        <argument>/Users/Sebram/Weborium/fluxy/src/Fluxy/KeycheckBundle/Resources/views</argument>
-        <argument>!FluxyKeycheck</argument>
+        <argument>/Users/Sebram/Weborium/fluxy/src/Fluxy/FluxyBundle/Resources/views</argument>
+        <argument>!Fluxy</argument>
       </call>
       <call method="addPath">
         <argument>/Users/Sebram/Weborium/fluxy/templates</argument>

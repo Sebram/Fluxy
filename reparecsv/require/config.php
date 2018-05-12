@@ -17,8 +17,8 @@ class Config
 						return _dbconfig_;
 				}		
 				else { 
-						$arraydefine = array( $post["Database"],$post["Host"],$post["User"],$post["Pass"] );  
-							return $arraydefine ;
+					$arraydefine = array( $post["Database"],$post["Host"],$post["User"],$post["Pass"] );  
+					return $arraydefine ;
 				} 
 		}
 		else 

@@ -1,0 +1,6 @@
+# src/Acme/DemoBundle/Resources/config/validation.yml
+App\Fluxy\Entity\Fluxycsv:
+    properties:
+        file:
+            - File:
+                maxSize: 6000000
