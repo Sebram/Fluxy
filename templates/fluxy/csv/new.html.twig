@@ -12,50 +12,39 @@
     {% include '/fluxy/menu/menu1.html.twig' %}
     
     <div class="uploadform" style="margin-left:33.3%;width:33.3%">
-    <form action="csv-upload" method="POST" enctype="multipart/form-data">
-    <fieldset>
-    <legend><strong>Upload file:</strong></legend>
-    <p>Séléctionnez un fichier (csv): </p>
-    <input type="file" name="file">
-    <br>    
-	<hr style="border-top: dotted 1px;" />
-    <p>
-        Ou déposez le fichier dans "public/uploaded" puis entrez son nom ci-dessous:
-    </p>
-    <input type="text" placeholder="Filename.csv" name="filename">
-    
-    <br>
-    <hr>
-    <select name="separator" id="separator">
-        <option value="exclamationsharpe"> ";" </option>
-        <option value="pointvirgule"> "!#" </option>
-    </select>
-    <p>Sélectionnez une table à remplir:</p>
-    <select name="tablename">
-        {% for i in tables %}
-            
-            {% if i != 'oauth2_access_tokens' 
-                and i != 'oauth2_auth_codes'
-                and i != 'oauth2_clients'
-                and i != 'oauth2_refresh_tokens'
-                and i != 'test'
-                and i != 'user'
-                and i != 'migration_versions' 
-                and i != 'fluxycsv' 
-            %}
-                
-                <option> {{ i }} </option>
-            {% endif %}
-        {% endfor %}
-    </select>
-    <br>
-    <hr style="border-top: dotted 1px;" />
-    
-    <input type="submit" style="margin-left:80%">
-    <br>
-    <br>
-    </fieldset>
-    </form>
-</div>
+        <form action="csv-upload" method="POST" enctype="multipart/form-data">
+            <fieldset>
+                <legend><strong>Upload file:</strong></legend>
+                <p>Séléctionnez un fichier (csv): </p>
+                <input type="file" name="file">
+                <br>    
+                <hr>
+                <p>Sélectionnez une table à remplir:</p>
+                <select name="tablename">
+                    {% for i in tables %}
+                        
+                        {% if i != 'oauth2_access_tokens' 
+                            and i != 'oauth2_auth_codes'
+                            and i != 'oauth2_clients'
+                            and i != 'oauth2_refresh_tokens'
+                            and i != 'test'
+                            and i != 'user'
+                            and i != 'migration_versions' 
+                            and i != 'fluxycsv' 
+                        %}
+                            
+                            <option> {{ i }} </option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+                <br>
+                <hr style="border-top: dotted 1px;" />
+                <input type="submit" style="margin-left:80%">
+                <br>
+                <br>
+            </fieldset>
+        </form>
+        <em>* Si la table n'est pas dans la liste veuillez la créer.</em>
+    </div>
 </body>
 </html>

@@ -21,6 +21,8 @@
 <div class="uploadform" style="width:300px;text-align:center">
 	<form action="../../../load" method="POST">
 		<input type="hidden" name="fileid" value="{{ files[0] }}">
+		<input type="hidden" name="newpath" value="{{ newpath }}">
+		<input type="hidden" name="tablename" value="{{ tablename }}">
 		<fieldset>
 			<table class="table table-condensed">
 				{% set i = 0 %}
@@ -54,6 +56,7 @@
 			</div>
 		</fieldset>
 	</form>
+
 </div>
 </div>
 <br>

@@ -164,9 +164,16 @@ class FluxyKeycheckController extends FOSRestController
 
                 'csvkeys' => $csv_keys,
 
-                'columns' => $columns
+                'columns' => $columns,
+
+                'newpath' => $newpath,
+
+                'tablename' => $file->getTablename()
             ));
         }
+    
+
+       
     }
 
 
