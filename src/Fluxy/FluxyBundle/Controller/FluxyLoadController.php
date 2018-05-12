@@ -52,7 +52,8 @@ class FluxyLoadController extends Controller
         }
 
         $query =  $this->loadDataHead($newpath, $tablename);
-        //$query =  $this->loadDataRefListing(&$query, &$cles) ;
+        
+        
         
        	return new Response (
                 
@@ -71,8 +72,6 @@ class FluxyLoadController extends Controller
                 </html>'
 
                 );
-       
-
 
     }
 
