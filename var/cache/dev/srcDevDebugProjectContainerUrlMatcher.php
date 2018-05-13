@@ -163,18 +163,6 @@ class srcDevDebugProjectContainerUrlMatcher extends Symfony\Bundle\FrameworkBund
         }
         not_nelmio_api_docswagger_ui:
 
-        // homefluxy_home
-        if ('/home' === $pathinfo) {
-            $ret = array (  '_controller' => 'App\\Fluxy\\UserBundle\\Controller\\FluxyUserController:homeAction',  '_format' => 'json',  '_route' => 'homefluxy_home',);
-            if (!in_array($canonicalMethod, array('GET'))) {
-                $allow = array_merge($allow, array('GET'));
-                goto not_homefluxy_home;
-            }
-
-            return $ret;
-        }
-        not_homefluxy_home:
-
         if (0 === strpos($pathinfo, '/users')) {
             // new_usersfluxy_new_users
             if (0 === strpos($pathinfo, '/users/new') && preg_match('#^/users/new/(?P<mail>[^/]++)/(?P<username>[^/]++)/(?P<pass>[^/]++)$#sD', $pathinfo, $matches)) {
@@ -214,7 +202,39 @@ class srcDevDebugProjectContainerUrlMatcher extends Symfony\Bundle\FrameworkBund
 
         }
 
-        elseif (0 === strpos($pathinfo, '/keycheck')) {
+        // fluxy
+        if ('' === $trimmedPathinfo) {
+            $ret = array (  '_controller' => 'App\\Fluxy\\FluxyBundle\\Controller\\FluxyHomeController::indexAction',  '_route' => 'fluxy',);
+            if ('/' === substr($pathinfo, -1)) {
+                // no-op
+            } elseif ('GET' !== $canonicalMethod) {
+                goto not_fluxy;
+            } else {
+                return array_replace($ret, $this->redirect($rawPathinfo.'/', 'fluxy'));
+            }
+
+            if (!in_array($canonicalMethod, array('GET'))) {
+                $allow = array_merge($allow, array('GET'));
+                goto not_fluxy;
+            }
+
+            return $ret;
+        }
+        not_fluxy:
+
+        // fluxy_home
+        if ('/home' === $pathinfo) {
+            $ret = array (  '_controller' => 'App\\Fluxy\\FluxyBundle\\Controller\\FluxyHomeController::homeAction',  '_route' => 'fluxy_home',);
+            if (!in_array($canonicalMethod, array('GET'))) {
+                $allow = array_merge($allow, array('GET'));
+                goto not_fluxy_home;
+            }
+
+            return $ret;
+        }
+        not_fluxy_home:
+
+        if (0 === strpos($pathinfo, '/keycheck')) {
             // keycheckfluxy_keycheck
             if (preg_match('#^/keycheck/(?P<fileid>[^/]++)/?$#sD', $pathinfo, $matches)) {
                 $ret = $this->mergeDefaults(array_replace($matches, array('_route' => 'keycheckfluxy_keycheck')), array (  '_controller' => 'App\\Fluxy\\FluxyBundle\\Controller\\FluxyKeycheckController::keycheckAction',  '_format' => 'json',));

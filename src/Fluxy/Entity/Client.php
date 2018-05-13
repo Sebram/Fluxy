@@ -1,7 +1,7 @@
 <?php
 // src/Entity/Client.php
 
-namespace App\Entity;
+namespace App\Fluxy\Entity;
 
 use FOS\OAuthServerBundle\Entity\Client as BaseClient;
 use Doctrine\ORM\Mapping as ORM;

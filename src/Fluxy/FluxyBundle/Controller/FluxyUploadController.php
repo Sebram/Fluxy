@@ -19,10 +19,10 @@ use FOS\RestBundle\Controller\Annotations\View;
 use FOS\OAuthServerBundle\Security\Authentication\Token\OAuthToken;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
-use App\Entity\User;
-use App\Entity\Client;
+use App\Fluxy\Entity\User;
+use App\Fluxy\Entity\Client;
 use Symfony\Doctrine\DBAL\Schema\MySqlSchemaManager;
-use App\Entity\Fluxycsv;
+use App\Fluxy\Entity\Fluxycsv;
 
 class FluxyUploadController extends FOSRestController
 {

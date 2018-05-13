@@ -10,18 +10,24 @@ nelmio-api-doc:
     resource: "@NelmioApiDocBundle/Resources/config/routing/swaggerui.xml"
     prefix:   /documentation
 
-app_fluxy:
+
+################################################################################
+
+fluxy:
     type: rest
     resource: App\Fluxy\UserBundle\Controller\FluxyUserController
 
-app_fluxy_keycheck:
+fluxy_home:
+    resource: App\Fluxy\FluxyBundle\Controller\FluxyHomeController
+
+fluxy_keycheck:
     type: rest
     resource: App\Fluxy\FluxyBundle\Controller\FluxyKeycheckController
 
-app_fluxy_upload:
+fluxy_upload:
     resource: App\Fluxy\FluxyBundle\Controller\FluxyUploadController
 
-app_fluxy_load:
+fluxy_load:
     resource: App\Fluxy\FluxyBundle\Controller\FluxyLoadController
 
 

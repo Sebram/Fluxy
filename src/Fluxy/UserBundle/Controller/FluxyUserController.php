@@ -19,27 +19,12 @@ use FOS\RestBundle\Controller\Annotations\View;
 use FOS\OAuthServerBundle\Security\Authentication\Token\OAuthToken;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
-use App\Entity\User;
-use App\Entity\Client;
+use App\Fluxy\Entity\User;
+use App\Fluxy\Entity\Client;
 
 
 class FluxyUserController extends FOSRestController
 {
-
-    /**
-     * @Get(
-     *     path = "/home",
-     *     name = "fluxy_home"
-     * )
-     */
-    public function homeAction()
-    {
-        $appname="Fluxy";
-
-        return $this->render('fluxy/home.html.twig', array(
-            'appname' => $appname,
-        ));
-    }
 
 
     /**

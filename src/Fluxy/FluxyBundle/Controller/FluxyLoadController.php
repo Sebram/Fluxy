@@ -19,15 +19,13 @@ use FOS\RestBundle\Controller\Annotations\View;
 use FOS\OAuthServerBundle\Security\Authentication\Token\OAuthToken;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
-use App\Entity\User;
-use App\Entity\Client;
+use App\Fluxy\Entity\User;
+use App\Fluxy\Entity\Client;
 use Symfony\Doctrine\DBAL\Schema\MySqlSchemaManager;
-use App\Entity\Fluxycsv;
-
+use App\Fluxy\Entity\Fluxycsv;
 
 class FluxyLoadController extends Controller
 {
-
 
     /**
      * @Route("/load")
@@ -38,23 +36,32 @@ class FluxyLoadController extends Controller
     public function loadAction(Request $request)
     {	
 
-        $cles = 
+        
         $request = Request::createFromGlobals();
 
-        echo $newpath = $request->request->get('newpath');
-        echo ' into ';
-        echo $tablename = $request->request->get('tablename');
+        $newpath = $request->request->get('newpath');
+        
+        $tablename = $request->request->get('tablename');
 
-        foreach ($request->request as $key => $value) {
-        	echo '<pre> '.$key.' ';
-        	print_r( $value );
-        	echo '</pre>';
-        }
+        $postvalue = $request->request;
+
+        $csv_keystab = $this->csvKeys( $this->handle( $newpath ) );
+        
+        $cles = $csv_keystab;
+        
+        $cles = $cles[0];
+        
+        array_pop($cles);
+        
+        # var_dump($cles );
 
         $query =  $this->loadDataHead($newpath, $tablename);
         
-        
-        
+        $query = $this->loadDataRefListing($query, $cles);
+         
+        $query = $this->loadDataSetting($query, $postvalue);
+
+       
        	return new Response (
                 
                 '<html>
@@ -74,8 +81,6 @@ class FluxyLoadController extends Controller
                 );
 
     }
-
-
 
 
 
@@ -114,11 +119,11 @@ class FluxyLoadController extends Controller
 
         $query .=   " (";
 
-        $valuequery="";
+        $valuequery = "";
 
-        array_walk($cles[0], $loop=function($cle, $key) use (&$valuequery) {
+        array_walk($cles, $loop=function($cle, $key) use (&$valuequery) {
             
-            $valuequery .= '@'.str_replace( '"','',$cle ).', '; 
+            $valuequery .= '@'.strtr( $cle, array('"'=>'', ' '=>'') ).', '; 
         
         });
 
@@ -132,52 +137,36 @@ class FluxyLoadController extends Controller
     private function loadDataSetting(&$query, &$post)
 
     {
-        $x=0;
+        $x=1;
 
         $postvalue = $post;
 
         $query .=   " SET " .chr(13);
 
-        array_walk($postvalue, $loop_post = function($item, $key) use (&$query, &$postvalue, &$x) {
+        foreach ($postvalue as $item) {
+            
+            if( $postvalue->get("csvref-$x") != "" ) {
 
-            if( @$postvalue["csvref-$x"] != "" ) {
-
-                $query .= strtolower( @$postvalue["tableref-$x"] )." = ";
-
-                if( @$postvalue["csvref-$x"] == "" ) { 
+                $query .= strtolower( $postvalue->get("tableref-$x") )." = ";
+        
+                if( $postvalue->get("csvref-$x") == "" ) { 
 
                     $query .= "'',"; 
 
                 } elseif($x == (count($postvalue)-1)) {
                     
-                    $query .= @$postvalue["csvref-$x"] .chr(13); 
+                    $query .= $postvalue->get("csvref-$x") .chr(13); 
                 
                 } else {
 
-                    $query .= @$postvalue["csvref-$x"].','.chr(13);
+                    $query .= $postvalue->get("csvref-$x").','.chr(13);
 
                 }
             }
             $x++;
-        });
+        }
 
         $query = substr( $query, 0, -2 ).';';   
-
-        return $query;
-    }
-
-    private function initQuery( &$post, &$path, &$tablename, $telhab="" )
-    
-    {
-        $handle = $this->handle($path);
-        
-        $cles = $this->csvKeys($handle);
-        
-        $query = $this->loadDataHead($path, $tablename);
-        
-        $query = $this->loadDataRefListing($query, $cles);
-        
-        $query = $this->loadDataSetting($query, $post);
 
         return $query;
     }

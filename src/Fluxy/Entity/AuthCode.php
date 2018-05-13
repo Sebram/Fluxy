@@ -1,16 +1,16 @@
 <?php
-// src/Entity/AccessToken.php
+// src/Entity/AuthCode.php
 
-namespace App\Entity;
+namespace App\Fluxy\Entity;
 
-use FOS\OAuthServerBundle\Entity\AccessToken as BaseAccessToken;
+use FOS\OAuthServerBundle\Entity\AuthCode as BaseAuthCode;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Table("oauth2_access_tokens")
+ * @ORM\Table("oauth2_auth_codes")
  * @ORM\Entity
  */
-class AccessToken extends BaseAccessToken
+class AuthCode extends BaseAuthCode
 {
     /**
      * @ORM\Id

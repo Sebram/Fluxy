@@ -1,7 +1,9 @@
 <html>
 <head>
     <title>Fluxy KeyCheck</title>
+    <link rel="stylesheet" href="../../../style.css">
 </head>
+
 <body>
 <strong>FLUXY</strong> <a href="../../home">/home</a><a href="#">/keycheck/match</a>
  <strong> ... Now! Match => Csv file keys <em>( {{files[1]}} )</em> with Table column keys <em>( {{files[2]}} )</em> ! </strong> <a href="../../../uploaded/{{ filename }}">Voir le contenu du fichier</a>
@@ -12,13 +14,13 @@
 <hr style="border-top: dotted 1px;" />
 
 <br>
-<div>
+<div style="text-align:center;">
 <strong>
 	&nbsp;  Faite les correspondances dans le tableaux ci-dessous:
 </strong> 
 <br>
 <br>
-<div class="uploadform" style="width:300px;text-align:center">
+<div class="uploadform" style="margin-left:33.3%;width:33.3%">
 	<form action="../../../load" method="POST">
 		<input type="hidden" name="fileid" value="{{ files[0] }}">
 		<input type="hidden" name="newpath" value="{{ newpath }}">

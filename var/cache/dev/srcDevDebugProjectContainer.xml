@@ -409,7 +409,7 @@
     <parameter key="fos_user.storage">orm</parameter>
     <parameter key="fos_user.firewall_name">api</parameter>
     <parameter key="fos_user.model_manager_name">null</parameter>
-    <parameter key="fos_user.model.user.class">App\Entity\User</parameter>
+    <parameter key="fos_user.model.user.class">App\Fluxy\Entity\User</parameter>
     <parameter key="fos_user.profile.form.type">FOS\UserBundle\Form\Type\ProfileFormType</parameter>
     <parameter key="fos_user.profile.form.name">fos_user_profile_form</parameter>
     <parameter key="fos_user.profile.form.validation_groups" type="collection">
@@ -452,10 +452,10 @@
     <parameter key="fos_oauth_server.security.entry_point.class">FOS\OAuthServerBundle\Security\EntryPoint\OAuthEntryPoint</parameter>
     <parameter key="fos_oauth_server.server.options" type="collection"/>
     <parameter key="fos_oauth_server.model_manager_name">null</parameter>
-    <parameter key="fos_oauth_server.model.client.class">App\Entity\Client</parameter>
-    <parameter key="fos_oauth_server.model.access_token.class">App\Entity\AccessToken</parameter>
-    <parameter key="fos_oauth_server.model.refresh_token.class">App\Entity\RefreshToken</parameter>
-    <parameter key="fos_oauth_server.model.auth_code.class">App\Entity\AuthCode</parameter>
+    <parameter key="fos_oauth_server.model.client.class">App\Fluxy\Entity\Client</parameter>
+    <parameter key="fos_oauth_server.model.access_token.class">App\Fluxy\Entity\AccessToken</parameter>
+    <parameter key="fos_oauth_server.model.refresh_token.class">App\Fluxy\Entity\RefreshToken</parameter>
+    <parameter key="fos_oauth_server.model.auth_code.class">App\Fluxy\Entity\AuthCode</parameter>
     <parameter key="fos_oauth_server.template.engine">twig</parameter>
     <parameter key="fos_oauth_server.authorize.form.type">FOS\OAuthServerBundle\Form\Type\AuthorizeFormType</parameter>
     <parameter key="fos_oauth_server.authorize.form.name">fos_oauth_server_authorize_form</parameter>
@@ -3944,34 +3944,6 @@
         </argument>
         <argument>null</argument>
       </call>
-      <call method="add">
-        <argument type="service" id="security.request_matcher.h4hgfxz"/>
-        <argument type="collection">
-          <argument>IS_AUTHENTICATED_ANONYMOUSLY</argument>
-        </argument>
-        <argument>null</argument>
-      </call>
-      <call method="add">
-        <argument type="service" id="security.request_matcher.jjmzzqg"/>
-        <argument type="collection">
-          <argument>IS_AUTHENTICATED_ANONYMOUSLY</argument>
-        </argument>
-        <argument>null</argument>
-      </call>
-      <call method="add">
-        <argument type="service" id="security.request_matcher.bpx0ytz"/>
-        <argument type="collection">
-          <argument>IS_AUTHENTICATED_ANONYMOUSLY</argument>
-        </argument>
-        <argument>null</argument>
-      </call>
-      <call method="add">
-        <argument type="service" id="security.request_matcher.ultp5x6"/>
-        <argument type="collection">
-          <argument>IS_AUTHENTICATED_ANONYMOUSLY</argument>
-        </argument>
-        <argument>null</argument>
-      </call>
     </service>
     <service id="security.context_listener" class="Symfony\Component\Security\Http\Firewall\ContextListener" public="false">
       <tag name="monolog.logger" channel="security"/>
@@ -4462,18 +4434,6 @@
     <service id="security.request_matcher.it2k2lk" class="Symfony\Component\HttpFoundation\RequestMatcher" public="false">
       <argument>^/register</argument>
     </service>
-    <service id="security.request_matcher.h4hgfxz" class="Symfony\Component\HttpFoundation\RequestMatcher" public="false">
-      <argument>^/resetting</argument>
-    </service>
-    <service id="security.request_matcher.jjmzzqg" class="Symfony\Component\HttpFoundation\RequestMatcher" public="false">
-      <argument>^/admin/login$</argument>
-    </service>
-    <service id="security.request_matcher.bpx0ytz" class="Symfony\Component\HttpFoundation\RequestMatcher" public="false">
-      <argument>^/admin/logout$</argument>
-    </service>
-    <service id="security.request_matcher.ultp5x6" class="Symfony\Component\HttpFoundation\RequestMatcher" public="false">
-      <argument>^/admin/login_check$</argument>
-    </service>
     <service id="security.command.user_password_encoder" class="Symfony\Bundle\SecurityBundle\Command\UserPasswordEncoderCommand" public="false">
       <tag name="console.command" command="security:encode-password"/>
       <argument type="service" id="security.encoder_factory.generic"/>
@@ -4763,7 +4723,7 @@
     <service id="doctrine.orm.default_configuration" class="Doctrine\ORM\Configuration" public="false">
       <call method="setEntityNamespaces">
         <argument type="collection">
-          <argument key="App">App\Entity</argument>
+          <argument key="App">App\Fluxy\Entity</argument>
           <argument key="FOSOAuthServerBundle">FOS\OAuthServerBundle\Entity</argument>
         </argument>
       </call>
@@ -4810,7 +4770,7 @@
     <service id="doctrine.orm.default_annotation_metadata_driver" class="Doctrine\ORM\Mapping\Driver\AnnotationDriver" public="false">
       <argument type="service" id="annotations.cached_reader"/>
       <argument type="collection">
-        <argument>/Users/Sebram/Weborium/fluxy/src/Entity</argument>
+        <argument>/Users/Sebram/Weborium/fluxy/src/Fluxy/Entity</argument>
       </argument>
     </service>
     <service id="doctrine.orm.default_xml_metadata_driver" class="Doctrine\ORM\Mapping\Driver\SimplifiedXmlDriver" public="false">
@@ -4824,7 +4784,7 @@
     <service id="doctrine.orm.default_metadata_driver" class="Doctrine\Common\Persistence\Mapping\Driver\MappingDriverChain" public="false">
       <call method="addDriver">
         <argument type="service" id="doctrine.orm.default_annotation_metadata_driver"/>
-        <argument>App\Entity</argument>
+        <argument>App\Fluxy\Entity</argument>
       </call>
       <call method="addDriver">
         <argument type="service" id="doctrine.orm.default_xml_metadata_driver"/>
@@ -5988,7 +5948,7 @@
       <argument type="service" id="fos_user.util.password_updater"/>
       <argument type="service" id="fos_user.util.canonical_fields_updater"/>
       <argument type="service" id="fos_user.object_manager"/>
-      <argument>App\Entity\User</argument>
+      <argument>App\Fluxy\Entity\User</argument>
     </service>
     <service id="fos_user.object_manager" class="Doctrine\Common\Persistence\ObjectManager" public="false">
       <argument>null</argument>
@@ -6138,7 +6098,7 @@
     </service>
     <service id="fos_user.profile.form.type" class="FOS\UserBundle\Form\Type\ProfileFormType">
       <tag name="form.type" alias="fos_user_profile"/>
-      <argument>App\Entity\User</argument>
+      <argument>App\Fluxy\Entity\User</argument>
     </service>
     <service id="fos_user.profile.controller" class="FOS\UserBundle\Controller\ProfileController" public="true">
       <argument type="service" id="debug.event_dispatcher"/>
@@ -6156,7 +6116,7 @@
     </service>
     <service id="fos_user.registration.form.type" class="FOS\UserBundle\Form\Type\RegistrationFormType">
       <tag name="form.type" alias="fos_user_registration"/>
-      <argument>App\Entity\User</argument>
+      <argument>App\Fluxy\Entity\User</argument>
     </service>
     <service id="fos_user.registration.controller" class="FOS\UserBundle\Controller\RegistrationController" public="true">
       <argument type="service" id="debug.event_dispatcher"/>
@@ -6175,7 +6135,7 @@
     </service>
     <service id="fos_user.change_password.form.type" class="FOS\UserBundle\Form\Type\ChangePasswordFormType">
       <tag name="form.type" alias="fos_user_change_password"/>
-      <argument>App\Entity\User</argument>
+      <argument>App\Fluxy\Entity\User</argument>
     </service>
     <service id="fos_user.change_password.controller" class="FOS\UserBundle\Controller\ChangePasswordController" public="true">
       <argument type="service" id="debug.event_dispatcher"/>
@@ -6193,7 +6153,7 @@
     </service>
     <service id="fos_user.resetting.form.type" class="FOS\UserBundle\Form\Type\ResettingFormType">
       <tag name="form.type" alias="fos_user_resetting"/>
-      <argument>App\Entity\User</argument>
+      <argument>App\Fluxy\Entity\User</argument>
     </service>
     <service id="fos_user.listener.resetting" class="FOS\UserBundle\EventListener\ResettingListener">
       <tag name="kernel.event_subscriber"/>
@@ -6313,19 +6273,19 @@
     </service>
     <service id="fos_oauth_server.client_manager.default" class="FOS\OAuthServerBundle\Entity\ClientManager">
       <argument type="service" id="fos_oauth_server.entity_manager"/>
-      <argument>App\Entity\Client</argument>
+      <argument>App\Fluxy\Entity\Client</argument>
     </service>
     <service id="fos_oauth_server.access_token_manager.default" class="FOS\OAuthServerBundle\Entity\AccessTokenManager">
       <argument type="service" id="fos_oauth_server.entity_manager"/>
-      <argument>App\Entity\AccessToken</argument>
+      <argument>App\Fluxy\Entity\AccessToken</argument>
     </service>
     <service id="fos_oauth_server.refresh_token_manager.default" class="FOS\OAuthServerBundle\Entity\RefreshTokenManager">
       <argument type="service" id="fos_oauth_server.entity_manager"/>
-      <argument>App\Entity\RefreshToken</argument>
+      <argument>App\Fluxy\Entity\RefreshToken</argument>
     </service>
     <service id="fos_oauth_server.auth_code_manager.default" class="FOS\OAuthServerBundle\Entity\AuthCodeManager">
       <argument type="service" id="fos_oauth_server.entity_manager"/>
-      <argument>App\Entity\AuthCode</argument>
+      <argument>App\Fluxy\Entity\AuthCode</argument>
     </service>
     <service id="fos_oauth_server.entity_manager" class="Doctrine\ORM\EntityManager" public="false">
       <argument>null</argument>

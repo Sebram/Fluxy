@@ -1,16 +1,16 @@
 <?php
-// src/Entity/RefreshToken.php
+// src/Fluxy/Entity/AccessToken.php
 
-namespace App\Entity;
+namespace App\Fluxy\Entity;
 
-use FOS\OAuthServerBundle\Entity\RefreshToken as BaseRefreshToken;
+use FOS\OAuthServerBundle\Entity\AccessToken as BaseAccessToken;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Table("oauth2_refresh_tokens")
+ * @ORM\Table("oauth2_access_tokens")
  * @ORM\Entity
  */
-class RefreshToken extends BaseRefreshToken
+class AccessToken extends BaseAccessToken
 {
     /**
      * @ORM\Id
