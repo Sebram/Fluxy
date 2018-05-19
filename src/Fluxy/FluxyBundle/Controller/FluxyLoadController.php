@@ -52,8 +52,7 @@ class FluxyLoadController extends Controller
         $cles = $cles[0];
         
         array_pop($cles);
-        
-        # var_dump($cles );
+
 
         $query =  $this->loadDataHead($newpath, $tablename);
         
@@ -61,8 +60,16 @@ class FluxyLoadController extends Controller
          
         $query = $this->loadDataSetting($query, $postvalue);
 
-       
-       	return new Response (
+
+        $lastid =  "";
+
+        $sql = strtr($query,array( 'Ré'=>'Re', 'é'=>'e', 'à'=>'a', 'ô'=>'o', 'î'=>'i') );
+    
+
+        $message = $this->insertLoadFileQuery($sql);
+
+
+                return new Response (
                 
                 '<html>
                 <head>
@@ -71,14 +78,18 @@ class FluxyLoadController extends Controller
                     </title>
                 </head>
                 <body>
-                    <h2>Now we have to load ...</h2>
+                    <h2>Congratulations it\'s '.$message.'  ...</h2>
+                    '.$newpath.'
                     
-                    '.$query.'
+                    <br><br>
+                    '.$sql.'
                     
                 </body>
                 </html>'
 
                 );
+      
+       
 
     }
 
@@ -166,7 +177,7 @@ class FluxyLoadController extends Controller
             $x++;
         }
 
-        $query = substr( $query, 0, -2 ).';';   
+        $query = substr( $query, 0, -2 );   
 
         return $query;
     }
@@ -202,4 +213,29 @@ class FluxyLoadController extends Controller
         return $cles;
     }
 
+
+
+    private function insertLoadFileQuery($query) {
+        
+        $server = "localhost";
+        
+        $username =  "root";
+        
+        $password =  "bramskone";
+        
+        $bdd =  "Fluxy";
+        
+        $sqlcnx = mysqli_connect($server,$username,$password) or die ("No Connection");
+        
+        if($sqlcnx) {
+        
+            mysqli_select_db($sqlcnx, $bdd) or die ( "No Database found!" );
+        
+            $db = mysqli_query($sqlcnx, $query) or die ("<H4> ERROR ...".mysqli_error($sqlcnx)."</H4>"); 
+        
+            if( $db ){ return "registred"; }
+        }
+        
+        else return "<h3> ERROR ...".mysqli_error($sqlcnx) ;
+    }
 }	

@@ -248,8 +248,7 @@ class FluxyKeycheckController extends FOSRestController
             if( preg_match('#!\##', $uneligne[0]) ) {
 
                 if($x==0) {
-                
-                    $lignecles = strtr($uneligne[0], array(' '=>'', '!#'=>';'));
+                    $lignecles = strtr($uneligne[0], array(' '=>'', '!#'=>';', 'Ré'=>'Re', 'é'=>'e', 'à'=>'a', 'ô'=>'o', 'î'=>'i'));
 
                     file_put_contents( $newpath, utf8_encode( $lignecles ).chr(13).chr(10), FILE_APPEND);
 
@@ -263,14 +262,23 @@ class FluxyKeycheckController extends FOSRestController
             else {
 
                 if($x==0) {
+
+                    //var_dump($uneligne[0]);
+                    
+                    echo "<hr>"; 
                 
-                    $lignecles = strtr($uneligne[0], array(' '=>''));
+                    $lignecles = strtr( $uneligne[0] ,array(' '=>'', 'Ré'=>'Re', 'é'=>'e', 'à'=>'a', 'ô'=>'o', 'î'=>'i') );
+                    
+                    //var_dump( $lignecles );
                     
                     file_put_contents( $newpath, utf8_encode( $lignecles ).chr(13).chr(10), FILE_APPEND);
+
+                } else {
+
+                    file_put_contents( $newpath, utf8_encode( $uneligne[0] ).chr(13).chr(10), FILE_APPEND);
                 }
-                else
-                file_put_contents( $newpath, utf8_encode( $uneligne[0] ).chr(13).chr(10), FILE_APPEND);
             }
+
             $x++;
         }
         return true;
