@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Fluxy\FluxyBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -23,6 +22,7 @@ use App\Fluxy\Entity\User;
 use App\Fluxy\Entity\Client;
 use Symfony\Doctrine\DBAL\Schema\MySqlSchemaManager;
 use App\Fluxy\Entity\Fluxycsv;
+
 
 class FluxyLoadController extends Controller
 {
@@ -82,17 +82,16 @@ class FluxyLoadController extends Controller
                     '.$newpath.'
                     
                     <br><br>
-                    '.$sql.'
-                    
+                    <a href="/fluxy/public/">Retour</a> 
+                    <a href="/fluxy/public/maj/form/'. $tablename.'">Mettre des champs à jour</a>
+                    <br>
+
                 </body>
                 </html>'
 
                 );
       
-       
-
     }
-
 
 
     private function loadDataHead($path, $tablename) 
@@ -144,6 +143,7 @@ class FluxyLoadController extends Controller
 
         return $query;
     }
+
 
     private function loadDataSetting(&$query, &$post)
 
@@ -214,7 +214,6 @@ class FluxyLoadController extends Controller
     }
 
 
-
     private function insertLoadFileQuery($query) {
         
         $server = "localhost";
@@ -238,4 +237,6 @@ class FluxyLoadController extends Controller
         
         else return "<h3> ERROR ...".mysqli_error($sqlcnx) ;
     }
-}	
+
+
+}

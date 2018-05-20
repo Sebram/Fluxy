@@ -1,0 +1,148 @@
+<html>
+<head>
+    <title>Fluxy KeyCheck</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/fluxy/public/style.css">
+
+</head>
+
+<body>
+<strong>FLUXY</strong> <a href="/fluxy/public/home">/home</a><a href="#">/maj/form</a>
+ <strong> ... Mise à jour </strong>
+<hr style="border-top: dotted 1px;" />
+
+{% include '/fluxy/menu/menu1.html.twig' %}
+
+<hr style="border-top: dotted 1px;" />
+
+<br>
+<div style="text-align:center;">
+	<h3>Mettre des champs à jour</h3>
+	<br>
+	<strong>
+		&nbsp; Modifiez les champs que vous souhaitez :
+	</strong> 
+
+<br>
+<br>
+<input type="text" class="form-control" id="table" value="{{ tablename }}" readonly>	
+<br>
+
+	
+		<input type="text" class="form-control" id="modifchamp-0" placeholder="Entrer la colonne à modifier">	
+
+		<br>
+		
+		<input type="text" list="distinct_list-0" id="distinct-0" class="form-control" placeholder="
+		choisissez une valeur à modifier">
+
+		<datalist id="distinct_list-0">	
+		</datalist>
+		
+	
+		<p class="text-center" style="padding-top:15px"> Doit être égal à => </p>
+		<input type="text" class="form-control" id="newvalue-0" placeholder="Entrer la nouvelle valeur">
+
+
+
+	<!-- <div id="maj-button" class="text-right" style="padding-right:20px; margin-top:-10px;">
+		<strong class="plus" id="field-to-modify-0" style="color:silver; cursor:pointer; font-size:20px; padding:2px 10px 5px 10px; border:1px solid silver; border-radius:50%">+</strong>
+	</div> -->
+
+	<br>
+	<div id="debug"></div>
+	
+	
+	<br>
+	<div class="">
+		<div class="btn btn-primary" id="maj">Mettre à jour</div>
+	</div>
+	<br>
+	<div class="">
+		<div class="btn btn-primary" id="vider">Vider</div>
+	</div>	
+	<br>
+	<br>
+</div>
+	
+
+
+<script src="/fluxy/public/jquery.js"></script>
+<script>
+	// Rempli la liste de références
+$(function(){
+	var search;
+	var table;
+	$("#modifchamp-0").change( function() {
+		search = $(this).val();		
+		//console.log(search);	
+		table = $("#table").val();
+		if(table.length==0){alert('please enter table');}
+		else
+		$.ajax({
+		    url : '/fluxy/public/maj/'+search+'/'+table,
+		    type : 'GET',
+		    //data : 'champ=' + search+'&table='+table,
+		    success : function(response, statut) { 
+		    	var json = response;
+		    	console.log(response);
+		    	for (i=0;i<json.length;i++) { 
+		       	$("datalist#distinct_list-0").append("<option value='"+json[i][search]+"''></option>");
+		      }
+		   	},
+		   	error : function(resultat, statut, erreur){
+		   		$("#debug").append(resultat);
+		   	}
+	  	});
+		
+	});
+
+	$("#maj").click(function(){
+
+			var field, valtomodify, newval, table;  
+			
+			field 		  = 	$("#modifchamp-0").val();
+			valtomodify   = 	$("#distinct-0").val();
+			newval		  = 	$("#newvalue-0").val();
+			table		  = 	$("#table").val();
+			if(field != "" && valtomodify != "" && newval != "") {
+
+				$.ajax({
+			    url : '/fluxy/public/domaj/'+field+'/'+valtomodify+'/'+newval+'/'+table,
+			    type : 'GET',
+			    success : function(response, statut) { 
+			    	console.log(response);
+			    	if(response == "updated" ){
+			    		$("#debug").html("");
+			    		$("#debug").append('le champ "'+ field +'"=>"'+valtomodify+'" a bien été modifié par "' + newval+'"');
+			    		$("#modifchamp-0").val("");
+						$("#distinct-0").val("");
+						$("#newvalue-0").val("");
+						$("#distinct_list-0 option").each( function () {
+							$(this).val("");
+						})
+			    	}
+			   	},
+			   	error : function(resultat, statut, erreur){
+			   		$("#debug").append(resultat);
+			   	}
+			  });
+			}
+			else alert( "Merci d'entrer des valeurs dans chaque champs"	);
+	});
+
+	$("#vider").click(function(){
+		$("#debug").html("");
+		$("#modifchamp-0").val("");
+		$("#distinct-0").val("");
+		$("#newvalue-0").val("");
+		$("#distinct_list-0 option").each(function (){
+			$(this).val("");
+		})
+		
+	})
+});
+</script>
+
+</body>
+</html>

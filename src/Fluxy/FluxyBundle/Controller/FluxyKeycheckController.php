@@ -30,7 +30,7 @@ class FluxyKeycheckController extends FOSRestController
 
     /**
      * @Get(
-     *     path = "/keycheck/{fileid}/",
+     *     path = "/keycheck/{fileid}",
      *     name = "fluxy_keycheck",
      *     requirements = {"fileid"}
      * )
@@ -56,7 +56,7 @@ class FluxyKeycheckController extends FOSRestController
 
             $filename = $file->getName();
 
-            return $this->redirect('../../keycheck/match/'. $request->get('fileid'));
+            return $this->redirect('../keycheck/match/'. $request->get('fileid'));
             // return $this->render('fluxy/csv/keycheck.html.twig', array(
             
             //     'filename' => $filename,
@@ -69,7 +69,7 @@ class FluxyKeycheckController extends FOSRestController
 
     /**
      * @Get(
-     *     path = "/keycheck/match/{fileid}/",
+     *     path = "/keycheck/match/{fileid}",
      *     name = "fluxy_keycheck_match",
      *     requirements = {"fileid"}
      * )

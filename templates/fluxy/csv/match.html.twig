@@ -1,7 +1,8 @@
 <html>
 <head>
     <title>Fluxy KeyCheck</title>
-    <link rel="stylesheet" href="../../../style.css">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/fluxy/public/style.css">
 </head>
 
 <body>
@@ -20,8 +21,8 @@
 </strong> 
 <br>
 <br>
-<div class="uploadform" style="margin-left:33.3%;width:33.3%">
-	<form action="../../../load" method="POST">
+<div class="uploadform">
+	<form action="/fluxy/public/load" method="POST">
 		<input type="hidden" name="fileid" value="{{ files[0] }}">
 		<input type="hidden" name="newpath" value="{{ newpath }}">
 		<input type="hidden" name="tablename" value="{{ tablename }}">
@@ -31,11 +32,11 @@
 				{% for column in columns %}
 					<tr>
 						{% if i != 0 %}
-							<td style="width:33.3%;text-align:center">
+							<td style="text-align:center">
 									<input type ="text" value="{{ column }}" name="tableref-{{ i }}" class="form-control" readonly>
 							</td>
-							<td style="width:33.3%;text-align:center"> = </td>
-							<td style="width:33.3%;">
+							<td style="text-align:center"> = </td>
+							<td style="">
 								<input list="csvref"  type="text" name="csvref-{{ i }}" class="form-control" value=""> 
 								{% set j = 0 %}
 								<datalist id="csvref">
@@ -53,8 +54,8 @@
 				{% endfor %}
 			</table>
 			<hr>
-			<div style="margin-left:300px">
-				<input type="submit">
+			<div class="text-center">
+				<input type="submit" class="btn btn-primary">
 			</div>
 		</fieldset>
 	</form>
