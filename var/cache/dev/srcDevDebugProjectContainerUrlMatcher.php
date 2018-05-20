@@ -163,6 +163,18 @@ class srcDevDebugProjectContainerUrlMatcher extends Symfony\Bundle\FrameworkBund
         }
         not_nelmio_api_docswagger_ui:
 
+        // domajfluxy_domaj
+        if (0 === strpos($pathinfo, '/domaj') && preg_match('#^/domaj/(?P<field>[^/]++)/(?P<valtomodify>[^/]++)/(?P<newval>[^/]++)/(?P<table>[^/]++)$#sD', $pathinfo, $matches)) {
+            $ret = $this->mergeDefaults(array_replace($matches, array('_route' => 'domajfluxy_domaj')), array (  '_controller' => 'App\\Fluxy\\FluxyBundle\\Controller\\FluxyMajController::domajAction',  '_format' => 'json',));
+            if (!in_array($canonicalMethod, array('GET'))) {
+                $allow = array_merge($allow, array('GET'));
+                goto not_domajfluxy_domaj;
+            }
+
+            return $ret;
+        }
+        not_domajfluxy_domaj:
+
         if (0 === strpos($pathinfo, '/users')) {
             // new_usersfluxy_new_users
             if (0 === strpos($pathinfo, '/users/new') && preg_match('#^/users/new/(?P<mail>[^/]++)/(?P<username>[^/]++)/(?P<pass>[^/]++)$#sD', $pathinfo, $matches)) {
@@ -236,16 +248,8 @@ class srcDevDebugProjectContainerUrlMatcher extends Symfony\Bundle\FrameworkBund
 
         if (0 === strpos($pathinfo, '/keycheck')) {
             // keycheckfluxy_keycheck
-            if (preg_match('#^/keycheck/(?P<fileid>[^/]++)/?$#sD', $pathinfo, $matches)) {
+            if (preg_match('#^/keycheck/(?P<fileid>[^/]++)$#sD', $pathinfo, $matches)) {
                 $ret = $this->mergeDefaults(array_replace($matches, array('_route' => 'keycheckfluxy_keycheck')), array (  '_controller' => 'App\\Fluxy\\FluxyBundle\\Controller\\FluxyKeycheckController::keycheckAction',  '_format' => 'json',));
-                if ('/' === substr($pathinfo, -1)) {
-                    // no-op
-                } elseif ('GET' !== $canonicalMethod) {
-                    goto not_keycheckfluxy_keycheck;
-                } else {
-                    return array_replace($ret, $this->redirect($rawPathinfo.'/', 'keycheckfluxy_keycheck'));
-                }
-
                 if (!in_array($canonicalMethod, array('GET'))) {
                     $allow = array_merge($allow, array('GET'));
                     goto not_keycheckfluxy_keycheck;
@@ -256,16 +260,8 @@ class srcDevDebugProjectContainerUrlMatcher extends Symfony\Bundle\FrameworkBund
             not_keycheckfluxy_keycheck:
 
             // matchfluxy_keycheck_match
-            if (0 === strpos($pathinfo, '/keycheck/match') && preg_match('#^/keycheck/match/(?P<fileid>[^/]++)/?$#sD', $pathinfo, $matches)) {
+            if (0 === strpos($pathinfo, '/keycheck/match') && preg_match('#^/keycheck/match/(?P<fileid>[^/]++)$#sD', $pathinfo, $matches)) {
                 $ret = $this->mergeDefaults(array_replace($matches, array('_route' => 'matchfluxy_keycheck_match')), array (  '_controller' => 'App\\Fluxy\\FluxyBundle\\Controller\\FluxyKeycheckController::matchAction',  '_format' => 'json',));
-                if ('/' === substr($pathinfo, -1)) {
-                    // no-op
-                } elseif ('GET' !== $canonicalMethod) {
-                    goto not_matchfluxy_keycheck_match;
-                } else {
-                    return array_replace($ret, $this->redirect($rawPathinfo.'/', 'matchfluxy_keycheck_match'));
-                }
-
                 if (!in_array($canonicalMethod, array('GET'))) {
                     $allow = array_merge($allow, array('GET'));
                     goto not_matchfluxy_keycheck_match;
@@ -331,6 +327,33 @@ class srcDevDebugProjectContainerUrlMatcher extends Symfony\Bundle\FrameworkBund
                 return $ret;
             }
             not_fos_user_security_logout:
+
+        }
+
+        elseif (0 === strpos($pathinfo, '/maj')) {
+            // formfluxy_maj_form
+            if (0 === strpos($pathinfo, '/maj/form') && preg_match('#^/maj/form/(?P<table>[^/]++)$#sD', $pathinfo, $matches)) {
+                $ret = $this->mergeDefaults(array_replace($matches, array('_route' => 'formfluxy_maj_form')), array (  '_controller' => 'App\\Fluxy\\FluxyBundle\\Controller\\FluxyMajController::formAction',  '_format' => 'json',));
+                if (!in_array($canonicalMethod, array('GET'))) {
+                    $allow = array_merge($allow, array('GET'));
+                    goto not_formfluxy_maj_form;
+                }
+
+                return $ret;
+            }
+            not_formfluxy_maj_form:
+
+            // majfluxy_maj
+            if (preg_match('#^/maj/(?P<champ>[^/]++)/(?P<table>[^/]++)$#sD', $pathinfo, $matches)) {
+                $ret = $this->mergeDefaults(array_replace($matches, array('_route' => 'majfluxy_maj')), array (  '_controller' => 'App\\Fluxy\\FluxyBundle\\Controller\\FluxyMajController::majAction',  '_format' => 'json',));
+                if (!in_array($canonicalMethod, array('GET'))) {
+                    $allow = array_merge($allow, array('GET'));
+                    goto not_majfluxy_maj;
+                }
+
+                return $ret;
+            }
+            not_majfluxy_maj:
 
         }
 
