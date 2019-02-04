@@ -16,31 +16,33 @@
 <hr style="border-top: dotted 1px;" />
 
 <br>
-<div style="text-align:center;">
+<div class="container">
 	<h3>Mettre des champs à jour</h3>
 	<br>
 	<strong>
-		&nbsp; Modifiez les champs que vous souhaitez :
-	</strong> 
+		&nbsp; Modifiez les champs que vous souhaitez dans la table
+	</strong>
 
 <br>
 <br>
-<input type="text" class="form-control" id="table" value="{{ tablename }}" readonly>	
+<input type="text" class="form-control" id="table" value="{{ tablename | upper }}" readonly>
 <br>
 
-	
-		<input type="text" class="form-control" id="modifchamp-0" placeholder="Entrer la colonne à modifier">	
+    <label for="">Entrer le nom de la colonne dans laquelle se trouve la valeur à modifier :</label>
+		<input type="text" class="form-control" id="modifchamp-0" placeholder="Nom de la colonne">
 
 		<br>
-		
-		<input type="text" list="distinct_list-0" id="distinct-0" class="form-control" placeholder="
-		choisissez une valeur à modifier">
 
-		<datalist id="distinct_list-0">	
+		<input type="text" list="distinct_list-0" id="distinct-0" class="form-control"
+    placeholder=" Entrez la valeur à modifier dans toute la table">
+
+		<datalist id="distinct_list-0">
 		</datalist>
-		
-	
-		<p class="text-center" style="padding-top:15px"> Doit être égal à => </p>
+
+
+		<p class="" style="padding-top:15px">
+    Doit être égal à :
+   </p>
 		<input type="text" class="form-control" id="newvalue-0" placeholder="Entrer la nouvelle valeur">
 
 
@@ -51,20 +53,23 @@
 
 	<br>
 	<div id="debug"></div>
-	
-	
-	<br>
-	<div class="">
-		<div class="btn btn-primary" id="maj">Mettre à jour</div>
-	</div>
-	<br>
-	<div class="">
-		<div class="btn btn-primary" id="vider">Vider</div>
-	</div>	
-	<br>
-	<br>
+
+<div class="row">
+  <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+    <div class="text-left">
+    	<div class="btn btn-primary" id="maj">Mettre à jour</div>
+    </div>
+  </div>
+  <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+  	<div class="text-right">
+  		<div class="btn btn-primary" id="vider">Vider</div>
+  	</div>
+  </div>
 </div>
-	
+
+
+</div>
+<br><br>
 
 
 <script src="/fluxy/public/jquery.js"></script>
@@ -74,8 +79,8 @@ $(function(){
 	var search;
 	var table;
 	$("#modifchamp-0").change( function() {
-		search = $(this).val();		
-		//console.log(search);	
+		search = $(this).val();
+		//console.log(search);
 		table = $("#table").val();
 		if(table.length==0){alert('please enter table');}
 		else
@@ -83,10 +88,10 @@ $(function(){
 		    url : '/fluxy/public/maj/'+search+'/'+table,
 		    type : 'GET',
 		    //data : 'champ=' + search+'&table='+table,
-		    success : function(response, statut) { 
+		    success : function(response, statut) {
 		    	var json = response;
 		    	console.log(response);
-		    	for (i=0;i<json.length;i++) { 
+		    	for (i=0;i<json.length;i++) {
 		       	$("datalist#distinct_list-0").append("<option value='"+json[i][search]+"''></option>");
 		      }
 		   	},
@@ -94,13 +99,13 @@ $(function(){
 		   		$("#debug").append(resultat);
 		   	}
 	  	});
-		
+
 	});
 
 	$("#maj").click(function(){
 
-			var field, valtomodify, newval, table;  
-			
+			var field, valtomodify, newval, table;
+
 			field 		  = 	$("#modifchamp-0").val();
 			valtomodify   = 	$("#distinct-0").val();
 			newval		  = 	$("#newvalue-0").val();
@@ -110,7 +115,7 @@ $(function(){
 				$.ajax({
 			    url : '/fluxy/public/domaj/'+field+'/'+valtomodify+'/'+newval+'/'+table,
 			    type : 'GET',
-			    success : function(response, statut) { 
+			    success : function(response, statut) {
 			    	console.log(response);
 			    	if(response == "updated" ){
 			    		$("#debug").html("");
@@ -139,7 +144,7 @@ $(function(){
 		$("#distinct_list-0 option").each(function (){
 			$(this).val("");
 		})
-		
+
 	})
 });
 </script>
